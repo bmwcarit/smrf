@@ -1,0 +1,22 @@
+cmake:
+ build: |
+    RUN install-packages cmake make ninja-build
+
+gcc:
+ build: |
+    RUN install-packages gcc-c++
+
+zlib-devel:
+ build: |
+    RUN install-packages zlib-devel
+
+boost-devel:
+ build: |
+    RUN install-packages boost-devel
+
+cpp-build-essentials:
+ requires:
+ - gcc
+ - cmake
+ - zlib-devel
+ - boost-devel

@@ -1,0 +1,41 @@
+smrf-base:
+ FROM: fedora:25
+ build_directory: resources/base
+ build: |
+
+    ###################################################
+    # create data directories and volumes
+    ###################################################
+    WORKDIR /
+    RUN mkdir /data
+    VOLUME /data/src
+
+    ###################################################
+    # copy scripts and add to PATH
+    ###################################################
+    COPY scripts /data/scripts
+    ENV PATH /data/scripts:$PATH
+
+    ###################################################
+    # install necessary packages
+    ###################################################
+    RUN install-packages \
+           wget \
+           tar \
+           xz \
+           git
+
+    ###################################################
+    # install tini
+    ###################################################
+    ENV TINI_VERSION v0.14.0
+    ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+    RUN chmod +x /tini
+
+    ###################################################
+    # login as user "smrf"
+    ###################################################
+    ENV GOSU_VERSION=1.10
+    RUN curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-amd64" \
+    && chmod 755 /usr/local/bin/gosu
+    ENTRYPOINT ["/tini", "-g", "--", "/data/scripts/boot2user.sh"]

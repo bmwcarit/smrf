@@ -1,0 +1,16 @@
+_SOURCES_:
+ - smrf-base.yml
+ - macros/cpp.yml
+
+smrf-cpp:
+ requires:
+  - smrf-base
+  - clang-from-llvm
+  - gtest-gmock-from-github
+  - cpp-build-essentials
+  - flatbuffers-from-github
+ build: |
+    ###################################################
+    # install necessary packages
+    ###################################################
+    RUN install-packages openssl-devel
