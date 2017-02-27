@@ -1,0 +1,5 @@
+/cpp/flatbuffers_generated/
+/.settings/
+.project
+/node/node_modules/
+/node/build/
