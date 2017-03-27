@@ -17,11 +17,17 @@
  * #L%
  */
 
-#include <smrf_generated.h>
-
-#include "smrf/MessageDeserializer.h"
-#include "smrf/MessageSerializer.h"
+#ifndef SMRF_PRIVATEKEY_H
+#define SMRF_PRIVATEKEY_H
 
 namespace smrf
 {
+
+/**
+ * TODO implement
+ */
+class PrivateKey;
+
 } // namespace smrf
+
+#endif // SMRF_PRIVATEKEY_H

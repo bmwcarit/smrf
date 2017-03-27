@@ -5,7 +5,14 @@ set(
 
 set(
     SMRF_PUBLIC_HEADER_FILES
-    smrf.h
+    exceptions.h
+    ByteVector.h
+    ByteArrayView.h
+    CertificateIdentifier.h
+    MessageSerializer.h
+    MessageDeserializer.h
+    Certificate.h
+    PrivateKey.h
 )
 
 # prepend path to public header files

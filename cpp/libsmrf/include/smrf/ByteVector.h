@@ -17,11 +17,17 @@
  * #L%
  */
 
-#ifndef SMRF_SMRF_H
-#define SMRF_SMRF_H
+#ifndef SMRF_BYTEVECTOR_H
+#define SMRF_BYTEVECTOR_H
+
+#include <cstdint>
+#include <vector>
 
 namespace smrf
 {
+using Byte = std::uint8_t;
+using ByteVector = std::vector<Byte>;
+
 } // namespace smrf
 
-#endif // SMRF_SMRF_H
+#endif // SMRF_BYTEVECTOR_H

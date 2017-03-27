@@ -17,11 +17,23 @@
  * #L%
  */
 
-#include <smrf_generated.h>
+#ifndef SMRF_EXCEPTIONS_H
+#define SMRF_EXCEPTIONS_H
 
-#include "smrf/MessageDeserializer.h"
-#include "smrf/MessageSerializer.h"
+#include <stdexcept>
 
 namespace smrf
 {
+
+class EncodingException : public std::runtime_error
+{
+    using runtime_error::runtime_error;
+};
+class SecurityException : public std::runtime_error
+{
+    using runtime_error::runtime_error;
+};
+
 } // namespace smrf
+
+#endif // SMRF_EXCEPTIONS_H

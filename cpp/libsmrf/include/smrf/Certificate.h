@@ -17,11 +17,17 @@
  * #L%
  */
 
-#include <smrf_generated.h>
-
-#include "smrf/MessageDeserializer.h"
-#include "smrf/MessageSerializer.h"
+#ifndef SMRF_CERTIFICATE_H
+#define SMRF_CERTIFICATE_H
 
 namespace smrf
 {
+
+/**
+ * TODO implement
+ */
+class Certificate;
+
 } // namespace smrf
+
+#endif // SMRF_CERTIFICATE_H
