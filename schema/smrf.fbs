@@ -1,0 +1,20 @@
+namespace smrf;
+
+table Header {
+    key: string(key);
+    value: string;
+}
+
+table Message {
+   recipient: string;
+   sender: string;
+   ttlMs: long;
+   ttlAbsolute: bool = true;
+   isSigned: bool = true;
+   isEncrypted: bool = true;
+   isCompressed: bool = false;
+   headers: [Header];
+   body: [ubyte];
+}
+
+root_type Message;
