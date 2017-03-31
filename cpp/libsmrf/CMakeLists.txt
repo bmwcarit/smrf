@@ -1,6 +1,7 @@
 set(
     SMRF_SOURCES
     smrf.cpp
+    compression.h
 )
 
 set(
