@@ -2,6 +2,7 @@ set(
     SMRF_SOURCES
     smrf.cpp
     compression.h
+    MessagePrefix.h
 )
 
 set(
