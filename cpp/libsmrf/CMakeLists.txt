@@ -1,6 +1,7 @@
 set(
     SMRF_SOURCES
-    smrf.cpp
+    MessageSerializer.cpp
+    MessageSerializerImpl.inl
     compression.h
     MessagePrefix.h
 )
