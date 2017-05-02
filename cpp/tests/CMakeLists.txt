@@ -1,2 +1,5 @@
 include(AddGtestGmock)
-add_subdirectory(unit-test)
+
+if(BUILD_UNIT_TESTS)
+    add_subdirectory(unit-test)
+endif()

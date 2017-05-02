@@ -47,6 +47,13 @@ option(
 )
 message(STATUS "option BUILD_TESTS=" ${BUILD_TESTS})
 
+option(
+    BUILD_UNIT_TESTS
+    "Build unit test?"
+    ON
+)
+message(STATUS "option BUILD_UNIT_TESTS=" ${BUILD_UNIT_TESTS})
+
 find_package(OpenSSL 1.0.2 REQUIRED)
 include(CheckOpenSSLImportTargets)
 
