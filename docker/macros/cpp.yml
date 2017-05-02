@@ -1,5 +1,7 @@
 _SOURCES_:
  - cpp/clang-from-llvm.yml
+ - cpp/clang-from-source.yml
  - cpp/cpp-build-essentials.yml
  - cpp/gtest-gmock-from-github.yml
  - cpp/flatbuffers-from-github.yml
+ - cpp/libfuzzer-from-source.yml

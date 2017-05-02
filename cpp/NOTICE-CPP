@@ -21,3 +21,4 @@ zlib under zlib license
 OpenSSL under OpenSSL License
 Google Test under BSD 3-clause License
 Google Mock under BSD 3-clause License
+libFuzzer under University of Illinois/NCSA Open Source License (NCSA)

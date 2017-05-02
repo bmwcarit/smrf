@@ -54,6 +54,22 @@ option(
 )
 message(STATUS "option BUILD_UNIT_TESTS=" ${BUILD_UNIT_TESTS})
 
+option(
+    BUILD_LIBFUZZER_TEST
+    "Build libfuzzer test?"
+    OFF
+)
+message(STATUS "option BUILD_LIBFUZZER_TEST=" ${BUILD_LIBFUZZER_TEST})
+
+if(BUILD_LIBFUZZER_TEST)
+    if(NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        message(FATAL_ERROR "building with Clang is required for fuzzing")
+    endif()
+    set(FUZZER_FLAGS "-fsanitize=address -fsanitize-coverage=trace-pc-guard")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FUZZER_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FUZZER_FLAGS}")
+endif()
+
 find_package(OpenSSL 1.0.2 REQUIRED)
 include(CheckOpenSSLImportTargets)
 

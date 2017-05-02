@@ -1,0 +1,8 @@
+_SOURCES_:
+ - smrf-cpp.yml
+
+smrf-libfuzzer:
+ requires:
+  - smrf-cpp
+  - clang-from-source
+  - libfuzzer-from-source

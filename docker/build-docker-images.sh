@@ -38,6 +38,7 @@ done
 declare -a DOCKER_IMAGES=(
     "smrf-base"
     "smrf-cpp"
+    "smrf-libfuzzer"
 )
 
 if [ $REPOSITORY ]; then
