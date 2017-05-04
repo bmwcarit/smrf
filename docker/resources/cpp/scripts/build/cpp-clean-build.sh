@@ -5,10 +5,11 @@ source /data/src/docker/resources/base/scripts/global.sh
 ENABLE_CLANG_FORMATTER='ON'
 BUILD_TESTS='ON'
 ADDITIONAL_CMAKE_ARGS=''
+INSTALL='OFF'
 
 function usage
 {
-    echo "usage: cpp-clean-build.sh [--jobs NUM_JOBS --enableclangformatter ON|OFF --buildtests ON|OFF --additionalcmakeargs <args>]"
+    echo "usage: cpp-clean-build.sh [--jobs NUM_JOBS --enableclangformatter ON|OFF --buildtests ON|OFF --additionalcmakeargs <args> --install ON|OFF]"
 }
 
 while [ "$1" != "" ]; do
@@ -25,13 +26,20 @@ while [ "$1" != "" ]; do
         --additionalcmakeargs )  shift
                                  ADDITIONAL_CMAKE_ARGS=$1
                                  ;;
+        --install )              shift
+                                 INSTALL=$1
+                                 ;;
         * )                      usage
                                  exit 1
     esac
     shift
 done
 
-log "CPP CLEAN BUILD: JOBS=$JOBS, ENABLE_CLANG_FORMATTER=$ENABLE_CLANG_FORMATTER, BUILD_TESTS=$BUILD_TESTS, ADDITIONAL_CMAKE_ARGS=$ADDITIONAL_CMAKE_ARGS"
+log "CPP CLEAN BUILD: JOBS=$JOBS, \
+     ENABLE_CLANG_FORMATTER=$ENABLE_CLANG_FORMATTER, \
+     BUILD_TESTS=$BUILD_TESTS, \
+     ADDITIONAL_CMAKE_ARGS=$ADDITIONAL_CMAKE_ARGS, \
+     INSTALL=$INSTALL"
 
 log "ENVIRONMENT"
 env
@@ -49,3 +57,8 @@ cmake -DENABLE_CLANG_FORMATTER=$ENABLE_CLANG_FORMATTER \
       $SOURCE_DIRECTORY
 
 make -j $JOBS
+
+if [ "$INSTALL" == "ON" ]
+then
+  make install
+fi
