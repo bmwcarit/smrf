@@ -1,6 +1,7 @@
 AddTest(
     smrf-unit-test
     ../test-main.cpp
+    ../RoundtripMessage.h
     CompressionTest.cpp
     MessagePrefixTest.cpp
     MessageDeserializerTest.cpp
