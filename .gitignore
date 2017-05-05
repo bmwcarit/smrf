@@ -3,3 +3,4 @@
 .project
 /node/node_modules/
 /node/build/
+/compatibility-tests/node/node_modules/
