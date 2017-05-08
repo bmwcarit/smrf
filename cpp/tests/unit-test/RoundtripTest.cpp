@@ -44,6 +44,7 @@ TEST(RoundtripTest, notCompressedNotSignedNotEncrypted)
     const ByteVector& serializedMessage = serializer.serialize();
     ByteArrayView serializedMessageView(serializedMessage);
     MessageDeserializer deserializer(serializedMessageView);
+    EXPECT_EQ(serializedMessageView.size(), deserializer.getMessageSize());
     ASSERT_FALSE(deserializer.isSigned());
     ASSERT_FALSE(deserializer.isEncrypted());
     message.check(deserializer);
@@ -59,6 +60,7 @@ TEST(RoundtripTest, compressedNotSignedNotEncrypted)
     const ByteVector& serializedMessage = serializer.serialize();
     ByteArrayView view(serializedMessage);
     MessageDeserializer deserializer(view);
+    EXPECT_EQ(view.size(), deserializer.getMessageSize());
     ASSERT_FALSE(deserializer.isSigned());
     ASSERT_FALSE(deserializer.isEncrypted());
     message.check(deserializer);

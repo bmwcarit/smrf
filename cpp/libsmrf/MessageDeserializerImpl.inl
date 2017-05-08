@@ -58,6 +58,11 @@ public:
         return message->isEncrypted();
     }
 
+    std::uint64_t getMessageSize() const
+    {
+        return MessagePrefix::SIZE + messagePrefix.msgSize + messagePrefix.sigSize;
+    }
+
     bool isSigned() const
     {
         return message->isSigned();
@@ -186,7 +191,7 @@ private:
             }
 
             const std::size_t expectedMessageSize = MessagePrefix::SIZE + messagePrefix.msgSize + messagePrefix.sigSize;
-            if (serializedMessage.size() != expectedMessageSize) {
+            if (serializedMessage.size() < expectedMessageSize) {
                 throw EncodingException("wrong size");
             }
 

@@ -41,6 +41,11 @@ bool MessageDeserializer::isEncrypted() const
     return pImpl->isEncrypted();
 }
 
+std::uint64_t MessageDeserializer::getMessageSize() const
+{
+    return pImpl->getMessageSize();
+}
+
 bool MessageDeserializer::isSigned() const
 {
     return pImpl->isSigned();

@@ -75,6 +75,13 @@ public:
     bool isEncrypted() const;
 
     /**
+     * @brief Returns the size of the serialized message
+     *
+     * @return The size of the serialized message in byte
+     */
+    std::uint64_t getMessageSize() const;
+
+    /**
      * @brief Check if the given message is signed
      *
      * @return true if the message is signed. False otherwise.
