@@ -43,3 +43,10 @@ test('compressed', t => {
     expectedMessage.isCompressed = true;
     runRoundtripTest(expectedMessage, t);
 });
+
+test('large TTL', t => {
+    const expectedMessage = clone(message);
+    expectedMessage.ttlMs = new Date().getTime();
+    expectedMessage.isTtlAbsolute = true;
+    runRoundtripTest(expectedMessage, t);
+});
