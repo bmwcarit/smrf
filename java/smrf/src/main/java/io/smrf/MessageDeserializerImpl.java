@@ -44,7 +44,7 @@ public final class MessageDeserializerImpl implements MessageDeserializer {
         }
 
         final int expectedMessageSize = MessagePrefix.SIZE + messagePrefix.msgSize + messagePrefix.sigSize;
-        if (serializedMessage.length != expectedMessageSize) {
+        if (serializedMessage.length < expectedMessageSize) {
             throw new EncodingException("message size is wrong");
         }
 
@@ -126,6 +126,10 @@ public final class MessageDeserializerImpl implements MessageDeserializer {
 
     public boolean isTtlAbsolute() {
         return message.ttlAbsolute();
+    }
+
+    public int getMessageSize() {
+        return MessagePrefix.SIZE + messagePrefix.msgSize + messagePrefix.sigSize;
     }
 
     public boolean verifySignature(X509Certificate cert) {

@@ -28,6 +28,7 @@ public interface MessageDeserializer {
     public boolean isEncrypted();
     public boolean isSigned();
     public boolean isCompressed();
+    public int getMessageSize();
 
     public CertificateIdentifier getSignerCertificateIdentifier();
     public CertificateIdentifier getEncryptionCertificateIdentifier();

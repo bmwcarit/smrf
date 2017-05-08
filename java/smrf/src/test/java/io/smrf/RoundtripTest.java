@@ -40,8 +40,10 @@ public class RoundtripTest {
         TestMessage expectedMessage = new TestMessage();
         expectedMessage.initSerializer(serializer);
         serializer.setCompressed(isCompressed);
-        MessageDeserializer deserializer = new MessageDeserializerImpl(serializer.serialize());
+        byte[] serializedMessage = serializer.serialize();
+        MessageDeserializer deserializer = new MessageDeserializerImpl(serializedMessage);
         TestMessage deserializedMessage = new TestMessage(deserializer);
         assertEquals(expectedMessage, deserializedMessage);
+        assertEquals(serializedMessage.length, deserializer.getMessageSize());
     }
 }
