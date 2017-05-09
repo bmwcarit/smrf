@@ -23,6 +23,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import io.smrf.tests.TestMessage;
+
 public class RoundtripTest {
 
     @Test
@@ -35,14 +37,13 @@ public class RoundtripTest {
         run(true, false, false);
     }
 
-    private void run(boolean isCompressed, boolean isSigned, boolean isEncrypted) throws SecurityException, EncodingException, UnsuppportedVersionException {
+    private void run(boolean shouldBeCompressed, boolean isSigned, boolean isEncrypted) throws SecurityException, EncodingException, UnsuppportedVersionException {
+        TestMessage expectedMessage = new TestMessage(shouldBeCompressed);
         MessageSerializer serializer = new MessageSerializerImpl();
-        TestMessage expectedMessage = new TestMessage();
         expectedMessage.initSerializer(serializer);
-        serializer.setCompressed(isCompressed);
         byte[] serializedMessage = serializer.serialize();
         MessageDeserializer deserializer = new MessageDeserializerImpl(serializedMessage);
-        TestMessage deserializedMessage = new TestMessage(deserializer);
+        TestMessage deserializedMessage = TestMessage.getFromDeserializer(deserializer);
         assertEquals(expectedMessage, deserializedMessage);
         assertEquals(serializedMessage.length, deserializer.getMessageSize());
     }

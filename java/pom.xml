@@ -34,5 +34,6 @@
 	<modules>
 		<module>smrf-api</module>
 		<module>smrf</module>
+		<module>test-utils</module>
 	</modules>
 </project>

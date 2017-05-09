@@ -1,6 +1,4 @@
-package io.smrf;
-
-import java.util.Arrays;
+package io.smrf.tests;
 
 /*
  * #%L
@@ -10,9 +8,9 @@ import java.util.Arrays;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,9 +19,14 @@ import java.util.Arrays;
  * #L%
  */
 
+import java.util.Arrays;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
+
+import io.smrf.EncodingException;
+import io.smrf.MessageDeserializer;
+import io.smrf.MessageSerializer;
 
 public class TestMessage {
 
@@ -33,27 +36,53 @@ public class TestMessage {
     private final long ttlMs;
     private final boolean ttlAbsolute;
     private final byte[] body;
+    private final boolean isCompressed;
 
-    public TestMessage() {
-        sender = "sender";
-        recipient = "recipient";
-        headers = ImmutableMap.of("key1", "value1", "key2", "value2");
-        ttlMs = 12345L;
-        ttlAbsolute = false;
-        body = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    public TestMessage(boolean shouldBeCompressed) {
+        this.sender = "sender";
+        this.recipient = "recipient";
+        this.headers = ImmutableMap.of("key1", "value1", "key2", "value2");
+        this.ttlMs = 1234567L;
+        this.ttlAbsolute = false;
+
+        final int bodySize = 100;
+        this.body = new byte[bodySize];
+        for (int i = 0; i < bodySize; ++i) {
+            this.body[i] = (byte) i;
+        }
+        this.isCompressed = shouldBeCompressed;
     }
 
-    public TestMessage(MessageDeserializer deserializer) throws EncodingException {
-        sender = deserializer.getSender();
-        recipient = deserializer.getRecipient();
-        headers = deserializer.getHeaders();
-        ttlMs = deserializer.getTtlMs();
-        ttlAbsolute = deserializer.isTtlAbsolute();
+    public TestMessage(String sender,
+                       String recipient,
+                       Map<String, String> headers,
+                       long ttlMs,
+                       boolean ttlAbsolute,
+                       byte[] body,
+                       boolean isCompressed) {
+        this.sender = sender;
+        this.recipient = recipient;
+        this.headers = headers;
+        this.ttlMs = ttlMs;
+        this.ttlAbsolute = ttlAbsolute;
+        this.body = body;
+        this.isCompressed = isCompressed;
+    }
+
+    public static TestMessage getFromDeserializer(MessageDeserializer deserializer) throws EncodingException {
+        String sender = deserializer.getSender();
+        String recipient = deserializer.getRecipient();
+        Map<String, String> headers = deserializer.getHeaders();
+        long ttlMs = deserializer.getTtlMs();
+        boolean ttlAbsolute = deserializer.isTtlAbsolute();
+        boolean isCompressed = deserializer.isCompressed();
+        byte[] body = null;
         if (!deserializer.isEncrypted()) {
             body = deserializer.getUnencryptedBody();
         } else {
             throw new EncodingException("encryption not yet implemented");
         }
+        return new TestMessage(sender, recipient, headers, ttlMs, ttlAbsolute, body, isCompressed);
     }
 
     public void initSerializer(MessageSerializer serializer) {
@@ -63,6 +92,7 @@ public class TestMessage {
         serializer.setTtlMs(ttlMs);
         serializer.setTtlAbsolute(ttlAbsolute);
         serializer.setBody(body);
+        serializer.setCompressed(isCompressed);
     }
 
     @Override
@@ -71,6 +101,7 @@ public class TestMessage {
         int result = 1;
         result = prime * result + Arrays.hashCode(body);
         result = prime * result + ((headers == null) ? 0 : headers.hashCode());
+        result = prime * result + (isCompressed ? 1231 : 1237);
         result = prime * result + ((recipient == null) ? 0 : recipient.hashCode());
         result = prime * result + ((sender == null) ? 0 : sender.hashCode());
         result = prime * result + (ttlAbsolute ? 1231 : 1237);
@@ -98,6 +129,9 @@ public class TestMessage {
                 return false;
             }
         } else if (!headers.equals(other.headers)) {
+            return false;
+        }
+        if (isCompressed != other.isCompressed) {
             return false;
         }
         if (recipient == null) {
