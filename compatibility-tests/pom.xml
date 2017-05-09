@@ -19,33 +19,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.smrf</groupId>
-	<artifactId>smrf</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
-
-	<developers>
-		<developer>
-			<organization>BMW Car IT GmbH</organization>
-			<organizationUrl>http://www.bmw-carit.com</organizationUrl>
-		</developer>
-	</developers>
-
-	<scm>
-		<connection>scm:git:git@github.com:bmwcarit/smrf.git</connection>
-		<developerConnection>scm:git:git@github.com:bmwcarit/smrf.git</developerConnection>
-		<url>git@github.com:bmwcarit/smrf</url>
-	</scm>
-
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
+	<parent>
+		<groupId>io.smrf</groupId>
+		<artifactId>smrf</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>compatibility-tests</artifactId>
 	<packaging>pom</packaging>
+	<name>${project.groupId}:${project.artifactId}</name>
+	<properties>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+	</properties>
 	<modules>
 		<module>java</module>
-		<module>compatibility-tests</module>
 	</modules>
 </project>

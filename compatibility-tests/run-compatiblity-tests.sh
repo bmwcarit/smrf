@@ -7,6 +7,7 @@ export CI=true
 TEST_SRC_DIR=/data/src/compatibility-tests
 CPP_TEST_SRC_DIR=$TEST_SRC_DIR/cpp
 NODE_TEST_SRC_DIR=$TEST_SRC_DIR/node
+JAVA_TEST_SRC_DIR=$TEST_SRC_DIR/java
 
 TEST_BUILD_DIR=/data/build/smrf-compatibility-tests
 mkdir -p $TEST_BUILD_DIR
@@ -20,9 +21,10 @@ CPP_OUTPUT_DIR=$OUTPUT_DIR/cpp
 mkdir -p $CPP_OUTPUT_DIR
 NODE_OUTPUT_DIR=$OUTPUT_DIR/node
 mkdir -p $NODE_OUTPUT_DIR
+JAVA_OUTPUT_DIR=$OUTPUT_DIR/java
+mkdir -p $JAVA_OUTPUT_DIR
 
-
-declare -a IMPLEMENTATIONS=("cpp" "node")
+declare -a IMPLEMENTATIONS=("cpp" "node" "java")
 declare -a COMPRESSION=("compressed" "uncompressed")
 
 
@@ -55,6 +57,10 @@ mkdir -p $CPP_TEST_BUILD_DIR
     npm install
 )
 
+# Java
+(
+    /data/src/docker/resources/java/scripts/build/build.sh
+)
 
 ######################################################################
 # run each serializer to generate compressed and uncompressed output
@@ -78,6 +84,14 @@ mkdir -p $CPP_TEST_BUILD_DIR
     done
 )
 
+# Java
+(
+    cd $JAVA_TEST_SRC_DIR
+    for MODE in "${COMPRESSION[@]}"
+    do
+        mvn exec:java -Dexec.mainClass="io.smrf.tests.CompatibilitySerializer" -Dexec.args="--path $JAVA_OUTPUT_DIR/$MODE --compressed $MODE"
+    done
+)
 ######################################################################
 # run each deserializer with the output of all serializers
 ######################################################################
@@ -102,6 +116,18 @@ mkdir -p $CPP_TEST_BUILD_DIR
         for MODE in "${COMPRESSION[@]}"
         do
             npm run-script deserializer --compatibility-test:path=$OUTPUT_DIR/$IMPL/$MODE --compatibility-test:compressed=$MODE
+        done
+    done
+)
+
+# Java.js
+(
+    cd $JAVA_TEST_SRC_DIR
+    for IMPL in "${IMPLEMENTATIONS[@]}"
+    do
+        for MODE in "${COMPRESSION[@]}"
+        do
+            mvn exec:java -Dexec.mainClass="io.smrf.tests.CompatibilityDeserializer" -Dexec.args="--path $OUTPUT_DIR/$IMPL/$MODE --compressed $MODE"
         done
     done
 )
