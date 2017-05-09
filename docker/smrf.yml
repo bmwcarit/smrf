@@ -1,3 +1,6 @@
+_SOURCES_:
+ - macros/cpp.yml
+
 smrf-base:
  FROM: fedora:25
  build_directory: resources/base
@@ -39,3 +42,36 @@ smrf-base:
     RUN curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-amd64" \
     && chmod 755 /usr/local/bin/gosu
     ENTRYPOINT ["/tini", "-g", "--", "/data/scripts/boot2user.sh"]
+
+smrf-cpp:
+ requires:
+  - smrf-base
+  - clang-from-llvm
+  - gtest-gmock-from-github
+  - cpp-build-essentials
+  - flatbuffers-from-github
+ build: |
+    RUN install-packages openssl-devel
+
+smrf-libfuzzer:
+ requires:
+  - smrf-cpp
+  - clang-from-source
+  - libfuzzer-from-source
+
+smrf-node:
+ requires:
+  - smrf-cpp
+ build: |
+    RUN install-packages npm nodejs nodejs-devel
+
+smrf-java:
+ requires:
+  - smrf-base
+ build: |
+    RUN install-packages maven
+
+smrf-compatibility:
+ requires:
+  - smrf-node
+  - smrf-java

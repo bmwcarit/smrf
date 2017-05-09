@@ -52,5 +52,5 @@ fi
 
 for IMAGE in "${DOCKER_IMAGES[@]}"
 do
-    $DOCKER_MAKE --makefile "${IMAGE}.yml" ${IMAGE} ${REPOSITORY} --tag ${TAG}
+    $DOCKER_MAKE --makefile smrf.yml ${IMAGE} ${REPOSITORY} --tag ${TAG}
 done

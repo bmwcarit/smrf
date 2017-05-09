@@ -1,8 +1,0 @@
-_SOURCES_:
- - smrf-cpp.yml
-
-smrf-node:
- requires:
-  - smrf-cpp
- build: |
-    RUN install-packages npm nodejs nodejs-devel

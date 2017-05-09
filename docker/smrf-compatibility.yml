@@ -1,8 +1,0 @@
-_SOURCES_:
- - smrf-node.yml
- - smrf-java.yml
-
-smrf-compatibility:
- requires:
-  - smrf-node
-  - smrf-java
