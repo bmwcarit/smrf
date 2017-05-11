@@ -1,5 +1,3 @@
-package io.smrf.tests;
-
 /*
  * #%L
  * %%
@@ -18,6 +16,7 @@ package io.smrf.tests;
  * limitations under the License.
  * #L%
  */
+package io.smrf.tests;
 
 import static org.junit.Assert.assertEquals;
 
