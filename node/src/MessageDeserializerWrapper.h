@@ -66,8 +66,7 @@ public:
         if (!deserializer->isEncrypted()) {
             v8::Local<v8::Object> bodyBuffer;
             if (!isCompressed) {
-                // wrap a Node buffer around the body of the deserialized message
-                bodyBuffer = util::bufferWitNoOpFreeCallback(deserializer->getBody());
+                bodyBuffer = util::viewToBuffer(deserializer->getBody());
             } else {
                 bodyBuffer = util::byteVectorToBuffer(deserializer->decompressBody());
             }

@@ -64,6 +64,11 @@ auto string(const char* str)
     return Nan::New<v8::String>(str).ToLocalChecked();
 }
 
+auto viewToBuffer(const smrf::ByteArrayView& view)
+{
+    return Nan::CopyBuffer(reinterpret_cast<const char*>(view.data()), view.size()).ToLocalChecked();
+}
+
 auto viewToString(const smrf::ByteArrayView& view)
 {
     return Nan::New<v8::String>(reinterpret_cast<const char*>(view.data()), view.size()).ToLocalChecked();
