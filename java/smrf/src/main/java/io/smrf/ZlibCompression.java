@@ -67,8 +67,8 @@ public class ZlibCompression {
         }
     }
 
-    private static <T extends Processor> byte[] process(T processor, byte[] input)
-            throws DataFormatException, IOException {
+    private static <T extends Processor> byte[] process(T processor, byte[] input) throws DataFormatException,
+                                                                                  IOException {
         processor.setInput(input);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(input.length);
         byte[] buffer = new byte[1024];

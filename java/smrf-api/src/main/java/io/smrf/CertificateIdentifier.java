@@ -24,5 +24,6 @@ import javax.security.auth.x500.X500Principal;
 public interface CertificateIdentifier {
 
     public BigInteger getSerialNumber();
+
     public X500Principal getIssuer();
 }

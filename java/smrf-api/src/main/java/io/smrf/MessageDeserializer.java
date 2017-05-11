@@ -25,20 +25,32 @@ import java.util.Map;
 public interface MessageDeserializer {
 
     public boolean isEncrypted();
+
     public boolean isSigned();
+
     public boolean isCompressed();
+
     public int getMessageSize();
 
     public CertificateIdentifier getSignerCertificateIdentifier();
+
     public CertificateIdentifier getEncryptionCertificateIdentifier();
 
     public String getSender();
+
     public String getRecipient();
+
     public long getTtlMs();
+
     public boolean isTtlAbsolute();
+
     public Map<String, String> getHeaders();
+
     public String getHeader(String key);
+
     public boolean verifySignature(X509Certificate cert);
+
     public byte[] getUnencryptedBody() throws EncodingException;
+
     public byte[] decryptBody(PrivateKey key) throws SecurityException;
 }

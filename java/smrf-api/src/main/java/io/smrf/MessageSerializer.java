@@ -24,13 +24,22 @@ import java.util.Map;
 
 public interface MessageSerializer {
     public MessageSerializer encryptFor(X509Certificate cert);
+
     public byte[] serialize() throws SecurityException, EncodingException;
+
     public MessageSerializer setBody(byte[] body);
+
     public MessageSerializer setCompressed(boolean isCompressed);
+
     public MessageSerializer setHeaders(Map<String, String> headers);
+
     public MessageSerializer setRecipient(String recipient);
+
     public MessageSerializer setSender(String sender);
+
     public MessageSerializer setTtlMs(long ttlMs);
+
     public MessageSerializer setTtlAbsolute(boolean ttlAbsolute);
+
     public MessageSerializer signWith(X509Certificate cert, PrivateKey key);
 }

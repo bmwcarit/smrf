@@ -18,31 +18,36 @@
  */
 package io.smrf;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
 import io.smrf.tests.TestMessage;
+
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 public class RoundtripTest {
 
     @Test
-    public void notCompressedNotSignedNotEncrypted() throws SecurityException, EncodingException, UnsuppportedVersionException {
+    public void notCompressedNotSignedNotEncrypted() throws SecurityException, EncodingException,
+                                                    UnsuppportedVersionException {
         run(false, false, false);
     }
 
     @Test
-    public void compressedNotSignedNotEncrypted() throws SecurityException, EncodingException, UnsuppportedVersionException {
+    public void compressedNotSignedNotEncrypted() throws SecurityException, EncodingException,
+                                                 UnsuppportedVersionException {
         run(true, false, false);
     }
 
-    private void run(boolean shouldBeCompressed, boolean isSigned, boolean isEncrypted) throws SecurityException, EncodingException, UnsuppportedVersionException {
+    private void run(boolean shouldBeCompressed, boolean isSigned, boolean isEncrypted) throws SecurityException,
+                                                                                       EncodingException,
+                                                                                       UnsuppportedVersionException {
         TestMessage expectedMessage = new TestMessage(shouldBeCompressed);
         MessageSerializer serializer = new MessageSerializerImpl();
         expectedMessage.initSerializer(serializer);
         byte[] serializedMessage = serializer.serialize();
+
         MessageDeserializer deserializer = new MessageDeserializerImpl(serializedMessage);
         TestMessage deserializedMessage = TestMessage.getFromDeserializer(deserializer);
+
         assertEquals(expectedMessage, deserializedMessage);
         assertEquals(serializedMessage.length, deserializer.getMessageSize());
     }

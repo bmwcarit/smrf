@@ -75,7 +75,7 @@
 						<configFile>../java-formatter/code-formatter-config.xml</configFile>
 					</configuration>
 				</plugin>
-		  </plugins>
+			</plugins>
 		</pluginManagement>
 	</build>
 	<modules>

@@ -26,8 +26,7 @@ import org.junit.Test;
 public class ZlibCompressionTest {
     final byte[] data = "HELLO WORLD".getBytes();
     final ByteBuffer repeatedData;
-    final byte[] expectedCompressedData = javax.xml.bind.DatatypeConverter
-            .parseHexBinary("789cf370f5f1f15708f70ff271f118658e324799a34c729900bee83700");
+    final byte[] expectedCompressedData = javax.xml.bind.DatatypeConverter.parseHexBinary("789cf370f5f1f15708f70ff271f118658e324799a34c729900bee83700");
 
     public ZlibCompressionTest() {
         final int repetitions = 100;

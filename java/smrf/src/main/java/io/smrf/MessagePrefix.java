@@ -74,7 +74,7 @@ public class MessagePrefix {
         }
 
         final ByteBuffer prefixBuffer = ByteBuffer.wrap(serializedMessage, VERSION_OFFSET, SIZE)
-                .order(ByteOrder.LITTLE_ENDIAN);
+                                                  .order(ByteOrder.LITTLE_ENDIAN);
 
         this.version = prefixBuffer.get(VERSION_OFFSET);
         this.msgSize = prefixBuffer.getInt(MSG_SIZE_OFFSET);

@@ -88,8 +88,16 @@ public final class MessageSerializerImpl implements MessageSerializer {
 
         final int recipientOffset = flatBuffersBuilder.createString(recipient);
         final int senderOffset = flatBuffersBuilder.createString(sender);
-        final int messageOffset = Message.createMessage(flatBuffersBuilder, recipientOffset, senderOffset, ttlMs,
-                ttlAbsolute, isSigned, isEncrypted, isCompressed, headersOffset, bodyOffset);
+        final int messageOffset = Message.createMessage(flatBuffersBuilder,
+                                                        recipientOffset,
+                                                        senderOffset,
+                                                        ttlMs,
+                                                        ttlAbsolute,
+                                                        isSigned,
+                                                        isEncrypted,
+                                                        isCompressed,
+                                                        headersOffset,
+                                                        bodyOffset);
 
         flatBuffersBuilder.finish(messageOffset);
         final ByteBuffer messageBuffer = flatBuffersBuilder.dataBuffer();

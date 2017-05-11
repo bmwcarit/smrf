@@ -20,7 +20,7 @@ package io.smrf;
 
 @SuppressWarnings("serial")
 public class EncodingException extends Exception {
-     public EncodingException(final String msg) {
-            super(msg);
-     }
+    public EncodingException(final String msg) {
+        super(msg);
+    }
 }

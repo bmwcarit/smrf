@@ -20,9 +20,10 @@ package io.smrf;
 
 @SuppressWarnings("serial")
 public class UnsuppportedVersionException extends Exception {
-     public byte version;
-     public UnsuppportedVersionException(final byte version) {
-            super("unsupported SMRF version");
-            this.version = version;
-     }
+    public byte version;
+
+    public UnsuppportedVersionException(final byte version) {
+        super("unsupported SMRF version");
+        this.version = version;
+    }
 }

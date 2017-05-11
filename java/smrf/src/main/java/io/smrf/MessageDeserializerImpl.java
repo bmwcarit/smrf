@@ -68,8 +68,8 @@ public final class MessageDeserializerImpl implements MessageDeserializer {
         if (headers == null) {
             headers = new HashMap<>();
             for (int i = 0; i < message.headersLength(); i++) {
-                    Header header = message.headers(i);
-                    headers.put(header.key(), header.value());
+                Header header = message.headers(i);
+                headers.put(header.key(), header.value());
             }
         }
         return headers;
@@ -98,14 +98,14 @@ public final class MessageDeserializerImpl implements MessageDeserializer {
     }
 
     public byte[] getUnencryptedBody() throws EncodingException {
-        if(message.isEncrypted()) {
+        if (message.isEncrypted()) {
             throw new EncodingException("message is encrypted");
         }
         ByteBuffer bodyBuffer = message.bodyAsByteBuffer();
         // TODO we could avoid a copy if we return a ByteBuffer instead
         byte[] body = new byte[bodyBuffer.remaining()];
         bodyBuffer.get(body);
-        if(message.isCompressed()) {
+        if (message.isCompressed()) {
             return ZlibCompression.decompress(body);
         }
         return body;
