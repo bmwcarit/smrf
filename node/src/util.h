@@ -66,6 +66,11 @@ auto string(const char* str)
 
 auto viewToString(const smrf::ByteArrayView& view)
 {
+    return Nan::New<v8::String>(reinterpret_cast<const char*>(view.data()), view.size()).ToLocalChecked();
+}
+
+auto viewToExternalString(const smrf::ByteArrayView& view)
+{
     return Nan::New<v8::String>(new ExternalString(reinterpret_cast<const char*>(view.data()), view.size())).ToLocalChecked();
 }
 
