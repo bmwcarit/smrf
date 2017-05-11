@@ -31,6 +31,53 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 	</properties>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.googlecode.maven-java-formatter-plugin</groupId>
+										<artifactId>maven-java-formatter-plugin</artifactId>
+										<versionRange>[0.3.1,)</versionRange>
+										<goals>
+											<goal>format</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>com.googlecode.maven-java-formatter-plugin</groupId>
+					<artifactId>maven-java-formatter-plugin</artifactId>
+					<version>0.4</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>format</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<lineEnding>KEEP</lineEnding>
+						<overrideConfigCompilerVersion>true</overrideConfigCompilerVersion>
+						<configFile>../java-formatter/code-formatter-config.xml</configFile>
+					</configuration>
+				</plugin>
+		  </plugins>
+		</pluginManagement>
+	</build>
 	<modules>
 		<module>smrf-api</module>
 		<module>smrf</module>
