@@ -79,8 +79,8 @@
 		</pluginManagement>
 	</build>
 	<modules>
-		<module>smrf-api</module>
 		<module>smrf</module>
+		<module>smrf-api</module>
 		<module>test-utils</module>
 	</modules>
 </project>
