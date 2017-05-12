@@ -1,0 +1,51 @@
+<!--
+  #%L
+  %%
+  Copyright (C) 2017 BMW Car IT GmbH
+  %%
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  #L%
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>io.smrf</groupId>
+	<artifactId>smrf</artifactId>
+	<version>0.1.0</version>
+
+	<developers>
+		<developer>
+			<organization>BMW Car IT GmbH</organization>
+			<organizationUrl>http://www.bmw-carit.com</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:bmwcarit/smrf.git</connection>
+		<developerConnection>scm:git:git@github.com:bmwcarit/smrf.git</developerConnection>
+		<url>git@github.com:bmwcarit/smrf</url>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<packaging>pom</packaging>
+	<modules>
+		<module>java</module>
+		<module>compatibility-tests</module>
+	</modules>
+</project>

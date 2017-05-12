@@ -1,0 +1,16 @@
+BasedOnStyle: LLVM
+AccessModifierOffset: -4
+ConstructorInitializerIndentWidth: 8
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortFunctionsOnASingleLine: None
+AlwaysBreakTemplateDeclarations: true
+BinPackParameters: false
+ColumnLimit: 128
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+PenaltyBreakBeforeFirstCallParameter: 0
+PenaltyReturnTypeOnItsOwnLine: 600
+PointerAlignment: Left
+IndentWidth: 4
+TabWidth: 4
+BreakBeforeBraces: Linux
+ContinuationIndentWidth: 8

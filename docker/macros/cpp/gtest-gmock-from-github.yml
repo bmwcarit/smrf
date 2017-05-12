@@ -1,0 +1,14 @@
+gtest-gmock-from-github:
+ requires:
+  - cpp-build-essentials
+ build: |
+    RUN export GTEST_GMOCK_VERSION=aa148eb2b7f70ede0eb10de34b6254826bfb34f4 \
+        && cd /tmp/ \
+        && git clone https://github.com/google/googletest.git \
+        && cd googletest \
+        && git checkout $GTEST_GMOCK_VERSION \
+        && mkdir build \
+        && cd build \
+        && cmake .. \
+        && make install -j"$(nproc)" \
+        && rm -rf /tmp/googletest

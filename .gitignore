@@ -1,0 +1,8 @@
+/cpp/flatbuffers_generated/
+/node/node_modules/
+/node/build/
+/compatibility-tests/node/node_modules/
+target/
+.classpath
+.project
+.settings/

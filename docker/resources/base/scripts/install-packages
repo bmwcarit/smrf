@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -x -e
+
+dnf update -y
+dnf install -y "$@"
+dnf clean all

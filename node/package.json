@@ -1,0 +1,31 @@
+{
+  "name": "smrf-native",
+  "version": "0.1.0",
+  "description": "Node.js wrapper for libsmrf",
+  "main": "main.js",
+  "gypfile": true,
+  "scripts": {
+    "test": "ava -s 'test/*.test.js'",
+    "format": "gulp format"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bmwcarit/smrf.git"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/bmwcarit/smrf/issues"
+  },
+  "homepage": "https://github.com/bmwcarit/smrf/node/#readme",
+  "dependencies": {
+    "bindings": "1.2.1",
+    "nan": "2.6.2",
+    "node-gyp": "3.6.0"
+  },
+  "devDependencies": {
+    "ava": "0.19.1",
+    "clone": "2.1.1",
+    "gulp": "3.9.1",
+    "gulp-clang-format": "1.0.23"
+  }
+}

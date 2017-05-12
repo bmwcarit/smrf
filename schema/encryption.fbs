@@ -1,0 +1,31 @@
+namespace smrf.encryption;
+
+enum MessageAuthenticationCodeAlgorithm : byte {
+    HMAC_SHA256,
+    HMAC_SHA512
+}
+
+table MessageAuthentication {
+    macAlgorithm: MessageAuthenticationCodeAlgorithm = HMAC_SHA256;
+    mac: [byte];
+}
+
+table IssuerAndSerialNumber {
+    // hex string containing the certificate's serial number
+    serialNumber: string;
+
+    // string encoding of certificate issuer according to RFC 2253
+    issuer: string;
+}
+
+table PlaintextContainer {
+    certificateId: IssuerAndSerialNumber;
+    data: [byte];
+}
+
+table EncryptedPayload {
+    auth: MessageAuthentication;
+    envelopedData: [byte];
+}
+
+root_type EncryptedPayload;

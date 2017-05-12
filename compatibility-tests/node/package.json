@@ -1,0 +1,18 @@
+{
+  "name" : "compatibility-test",
+  "private" : true,
+  "description" : "compatibility tests",
+  "config": {
+    "path": "",
+    "compressed": "uncompressed"
+  },
+  "scripts" : {
+    "serializer" : "node serializer.js",
+    "deserializer" : "ava deserializer.js"
+  },
+  "dependencies": {
+    "stdio" : "0.2.7",
+    "smrf-native" : "*",
+    "ava": "0.19.1"
+  }
+}

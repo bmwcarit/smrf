@@ -1,0 +1,18 @@
+clang-from-source:
+ build: |
+    RUN export LLVM_TMP=/tmp/llvm \
+        && cd /tmp \
+        && git clone --depth 1 http://llvm.org/git/llvm.git \
+        && cd $LLVM_TMP/tools && git clone --depth 1 http://llvm.org/git/clang.git \
+        && cd $LLVM_TMP/projects && git clone --depth 1 http://llvm.org/git/compiler-rt.git \
+        && cd $LLVM_TMP/projects && git clone --depth 1 http://llvm.org/git/libcxx.git \
+        && cd $LLVM_TMP/projects && git clone --depth 1 http://llvm.org/git/libcxxabi.git \
+        && export LLVM_BUILD=$LLVM_TMP/build \
+        && mkdir -p $LLVM_BUILD \
+        && cmake -G "Ninja" \
+           -DLIBCXX_ENABLE_SHARED=OFF -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON \
+           -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD="X86" \
+           -DCMAKE_INSTALL_PREFIX=/usr/local \
+           $LLVM_TMP \
+        && ninja-build install \
+        && rm -rf $LLVM_TMP

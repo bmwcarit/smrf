@@ -1,0 +1,6 @@
+clang-from-llvm:
+ build: |
+    RUN cd /tmp/ \
+        && wget http://releases.llvm.org/3.9.0/clang+llvm-3.9.0-x86_64-fedora23.tar.xz \
+        && tar -C /usr/local -xf clang+llvm-3.9.0-x86_64-fedora23.tar.xz --strip 1 \
+        && rm -f /tmp/clang+llvm-3.9.0-x86_64-fedora23.tar.xz
