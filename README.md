@@ -10,4 +10,5 @@ specify the wireformat. SMRF is available in Java, JavaScript and C++.
 It was initially developed for usage in [joynr](https://joynr.io) to wrap messages
 before sending them to a remote party.
 
+[SMRF distribution channels](wiki/Distribution.md) -- Where and how to get SMRF.
 [Release Notes](wiki/ReleaseNotes.md) -- All SMRF releases and API changes at a glance.
