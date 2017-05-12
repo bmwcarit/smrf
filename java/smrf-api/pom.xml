@@ -21,10 +21,10 @@
   <artifactId>smrf-api</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
   <parent>
-  	<groupId>io.smrf</groupId>
+  	<groupId>io.joynr.smrf</groupId>
   	<artifactId>java</artifactId>
   	<version>0.1.0</version>
   	<relativePath>../pom.xml</relativePath>
   </parent>
-  <groupId>io.smrf.java</groupId>
+  <groupId>io.joynr.smrf.java</groupId>
 </project>

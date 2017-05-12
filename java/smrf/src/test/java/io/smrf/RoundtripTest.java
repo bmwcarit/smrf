@@ -16,9 +16,9 @@
  * limitations under the License.
  * #L%
  */
-package io.smrf;
+package io.joynr.smrf;
 
-import io.smrf.tests.TestMessage;
+import io.joynr.smrf.tests.TestMessage;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;

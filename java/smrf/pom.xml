@@ -22,12 +22,12 @@
 	<artifactId>smrf</artifactId>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<parent>
-		<groupId>io.smrf</groupId>
+		<groupId>io.joynr.smrf</groupId>
 		<artifactId>java</artifactId>
 		<version>0.1.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<groupId>io.smrf.java</groupId>
+	<groupId>io.joynr.smrf.java</groupId>
 	<properties>
 		<fbs.sources>${basedir}/src/main/flatbuffers</fbs.sources>
 		<fbs.generated.sources>${project.build.directory}/flatbuffers_generated</fbs.generated.sources>
@@ -65,12 +65,12 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>io.smrf.java</groupId>
+			<groupId>io.joynr.smrf.java</groupId>
 			<artifactId>smrf-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>io.smrf.tests</groupId>
+			<groupId>io.joynr.smrf.tests</groupId>
 			<artifactId>test-utils</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>

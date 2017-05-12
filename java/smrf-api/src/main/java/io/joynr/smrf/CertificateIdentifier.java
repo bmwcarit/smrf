@@ -16,7 +16,7 @@
  * limitations under the License.
  * #L%
  */
-package io.smrf;
+package io.joynr.smrf;
 
 import java.math.BigInteger;
 import javax.security.auth.x500.X500Principal;

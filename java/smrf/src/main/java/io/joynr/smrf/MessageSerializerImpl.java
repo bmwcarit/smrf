@@ -16,7 +16,7 @@
  * limitations under the License.
  * #L%
  */
-package io.smrf;
+package io.joynr.smrf;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

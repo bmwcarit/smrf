@@ -16,11 +16,14 @@
  * limitations under the License.
  * #L%
  */
-package io.smrf;
+package io.joynr.smrf;
 
 @SuppressWarnings("serial")
-public class EncodingException extends Exception {
-    public EncodingException(final String msg) {
-        super(msg);
+public class UnsuppportedVersionException extends Exception {
+    public byte version;
+
+    public UnsuppportedVersionException(final byte version) {
+        super("unsupported SMRF version");
+        this.version = version;
     }
 }
