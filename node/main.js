@@ -18,7 +18,12 @@
  */
 'use strict';
 
-const smrfNative = require('bindings')('smrf-native');
+var smrfNative;
+try {
+    smrfNative = require('smrf-native');
+} catch (err) {
+    smrfNative = require('bindings')('smrf-native');
+}
 
 function deserialize(buffer)
 {
