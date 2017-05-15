@@ -22,7 +22,7 @@
 	<parent>
 		<groupId>io.joynr.smrf</groupId>
 		<artifactId>smrf_parent</artifactId>
-		<version>0.1.0</version>
+		<version>0.1.1</version>
 	</parent>
 	<artifactId>compatibility-tests</artifactId>
 	<packaging>pom</packaging>

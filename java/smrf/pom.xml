@@ -24,7 +24,7 @@
 	<parent>
 		<groupId>io.joynr.smrf</groupId>
 		<artifactId>java</artifactId>
-		<version>0.1.0</version>
+		<version>0.1.1</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>io.joynr.smrf.java</groupId>
