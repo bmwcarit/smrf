@@ -21,7 +21,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.joynr.smrf</groupId>
 	<artifactId>smrf_parent</artifactId>
-	<version>0.1.2</version>
+	<version>0.1.3</version>
 	<name>SMRF</name>
 	<url>https://github.com/bmwcarit/smrf</url>
 	<description>The Secure Message wRapper Format (SMRF) aims at providing a unified messaging format for communication between heterogenous endpoints.</description>
@@ -78,11 +78,6 @@
 					This property will skip the execution of the maven-assembly-plugin during
 					deployment to Sonatype repositories. The plugin builds jar-with-dependencies
 					including third-party software that should not be deployed by this project.
-
-					Following jar-with-dependencies are created during build:
-					java/backend-services/channelurldirectory/target/deploy/channelurldirectory-jar-with-dependencies.jar
-					java/backend-services/capabilitiesdirectory/target/deploy/capabilitiesdirectory-jar-with-dependencies.jar
-					java/backend-services/discovery/target/deploy/discovery-jar-with-dependencies.jar
 				-->
 				<assembly.skipAssembly>true</assembly.skipAssembly>
 			</properties>
