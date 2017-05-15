@@ -20,9 +20,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>io.smrf</groupId>
-		<artifactId>smrf</artifactId>
-		<version>0.1.0</version>
+		<groupId>io.joynr.smrf</groupId>
+		<artifactId>smrf_parent</artifactId>
+		<version>0.1.1</version>
 	</parent>
 	<artifactId>java</artifactId>
 	<packaging>pom</packaging>
@@ -79,8 +79,8 @@
 		</pluginManagement>
 	</build>
 	<modules>
-		<module>smrf-api</module>
 		<module>smrf</module>
+		<module>smrf-api</module>
 		<module>test-utils</module>
 	</modules>
 </project>

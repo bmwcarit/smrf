@@ -16,7 +16,7 @@
  * limitations under the License.
  * #L%
  */
-package io.smrf;
+package io.joynr.smrf;
 
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;

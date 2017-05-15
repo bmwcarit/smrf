@@ -16,7 +16,7 @@
  * limitations under the License.
  * #L%
  */
-package io.smrf.tests;
+package io.joynr.smrf.tests;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,10 +26,10 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import io.smrf.EncodingException;
-import io.smrf.MessageDeserializer;
-import io.smrf.MessageDeserializerImpl;
-import io.smrf.UnsuppportedVersionException;
+import io.joynr.smrf.EncodingException;
+import io.joynr.smrf.MessageDeserializer;
+import io.joynr.smrf.MessageDeserializerImpl;
+import io.joynr.smrf.UnsuppportedVersionException;
 
 public class CompatibilityDeserializer {
 
@@ -50,7 +50,7 @@ public class CompatibilityDeserializer {
             System.exit(1);
             return;
         }
-        org.junit.runner.JUnitCore.main("io.smrf.tests.CompatibilityDeserializer");
+        org.junit.runner.JUnitCore.main("io.joynr.smrf.tests.CompatibilityDeserializer");
     }
 
     @Test

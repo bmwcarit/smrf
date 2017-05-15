@@ -16,7 +16,7 @@
  * limitations under the License.
  * #L%
  */
-package io.smrf.tests;
+package io.joynr.smrf.tests;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;

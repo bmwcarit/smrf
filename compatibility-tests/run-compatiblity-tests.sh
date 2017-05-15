@@ -89,7 +89,7 @@ mkdir -p $CPP_TEST_BUILD_DIR
     cd $JAVA_TEST_SRC_DIR
     for MODE in "${COMPRESSION[@]}"
     do
-        mvn exec:java -Dexec.mainClass="io.smrf.tests.CompatibilitySerializer" -Dexec.args="--path $JAVA_OUTPUT_DIR/$MODE --compressed $MODE"
+        mvn exec:java -Dexec.mainClass="io.joynr.smrf.tests.CompatibilitySerializer" -Dexec.args="--path $JAVA_OUTPUT_DIR/$MODE --compressed $MODE"
     done
 )
 ######################################################################
@@ -127,7 +127,7 @@ mkdir -p $CPP_TEST_BUILD_DIR
     do
         for MODE in "${COMPRESSION[@]}"
         do
-            mvn exec:java -Dexec.mainClass="io.smrf.tests.CompatibilityDeserializer" -Dexec.args="--path $OUTPUT_DIR/$IMPL/$MODE --compressed $MODE"
+            mvn exec:java -Dexec.mainClass="io.joynr.smrf.tests.CompatibilityDeserializer" -Dexec.args="--path $OUTPUT_DIR/$IMPL/$MODE --compressed $MODE"
         done
     done
 )

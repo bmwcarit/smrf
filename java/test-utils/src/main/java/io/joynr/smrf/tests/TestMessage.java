@@ -16,16 +16,16 @@
  * limitations under the License.
  * #L%
  */
-package io.smrf.tests;
+package io.joynr.smrf.tests;
 
 import java.util.Arrays;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 
-import io.smrf.EncodingException;
-import io.smrf.MessageDeserializer;
-import io.smrf.MessageSerializer;
+import io.joynr.smrf.EncodingException;
+import io.joynr.smrf.MessageDeserializer;
+import io.joynr.smrf.MessageSerializer;
 
 public class TestMessage {
 

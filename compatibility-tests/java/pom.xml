@@ -22,20 +22,20 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<artifactId>compatibility-tests-java</artifactId>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<parent>
-		<groupId>io.smrf</groupId>
+		<groupId>io.joynr.smrf</groupId>
 		<artifactId>compatibility-tests</artifactId>
-		<version>0.1.0</version>
+		<version>0.1.1</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<groupId>io.smrf.tests</groupId>
+	<groupId>io.joynr.smrf.tests</groupId>
 	<dependencies>
 		<dependency>
-			<groupId>io.smrf.java</groupId>
+			<groupId>io.joynr.smrf.java</groupId>
 			<artifactId>smrf</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>io.smrf.tests</groupId>
+			<groupId>io.joynr.smrf.tests</groupId>
 			<artifactId>test-utils</artifactId>
 			<version>${project.version}</version>
 		</dependency>

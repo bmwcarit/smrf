@@ -16,14 +16,14 @@
  * limitations under the License.
  * #L%
  */
-package io.smrf.tests;
+package io.joynr.smrf.tests;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import io.smrf.EncodingException;
-import io.smrf.MessageSerializer;
-import io.smrf.MessageSerializerImpl;
+import io.joynr.smrf.EncodingException;
+import io.joynr.smrf.MessageSerializer;
+import io.joynr.smrf.MessageSerializerImpl;
 
 public class CompatibilitySerializer {
 
