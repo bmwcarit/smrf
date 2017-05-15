@@ -1,3 +1,9 @@
+# SMRF 0.1.3
+Minor Sonatype bugfixes.
+
+# SMRF 0.1.2
+Minor Sonatype bugfixes.
+
 # SMRF 0.1.1
 Minor bug fixes release.
 
