@@ -78,11 +78,6 @@
 					This property will skip the execution of the maven-assembly-plugin during
 					deployment to Sonatype repositories. The plugin builds jar-with-dependencies
 					including third-party software that should not be deployed by this project.
-
-					Following jar-with-dependencies are created during build:
-					java/backend-services/channelurldirectory/target/deploy/channelurldirectory-jar-with-dependencies.jar
-					java/backend-services/capabilitiesdirectory/target/deploy/capabilitiesdirectory-jar-with-dependencies.jar
-					java/backend-services/discovery/target/deploy/discovery-jar-with-dependencies.jar
 				-->
 				<assembly.skipAssembly>true</assembly.skipAssembly>
 			</properties>
