@@ -20,9 +20,9 @@
 
 var smrfNative;
 try {
-    smrfNative = require('smrf-native');
+    smrfNative = require('smrf-native-cpp');
 } catch (err) {
-    smrfNative = require('bindings')('smrf-native');
+    smrfNative = require('bindings')('smrf-native-cpp');
 }
 
 function deserialize(buffer)
