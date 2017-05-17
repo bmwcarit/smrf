@@ -1,3 +1,6 @@
+# SMRF 0.1.4
+Bugfix in the node module regarding its native part
+
 # SMRF 0.1.3
 Minor Sonatype bugfixes.
 
