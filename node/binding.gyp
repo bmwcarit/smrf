@@ -5,7 +5,7 @@
   },
   'targets': [
   {
-    'target_name': 'smrf-native',
+    'target_name': 'smrf-native-cpp',
     'sources': [ 'src/smrf.cpp' ],
     'cflags_cc': [ '-std=c++14' ],
     'cflags!': [ '-fno-exceptions'],
