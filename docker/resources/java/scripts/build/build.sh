@@ -6,4 +6,4 @@ set -x -e
 
 cd /data/src
 
-mvn clean install -DskipTests
+mvn -B clean install -DskipTests
