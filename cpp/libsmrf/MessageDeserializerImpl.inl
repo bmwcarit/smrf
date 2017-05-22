@@ -113,6 +113,7 @@ public:
         std::unordered_map<std::string, std::string> headers;
         const flatbuffers::Vector<flatbuffers::Offset<Header>>* flatbuffersHeaders = message->headers();
         if (flatbuffersHeaders != nullptr) {
+            headers.reserve(flatbuffersHeaders->size());
             for (const Header* entry : *flatbuffersHeaders) {
                 // only insert entries with non-empty key and value
                 const flatbuffers::String* key = entry->key();

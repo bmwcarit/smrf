@@ -80,6 +80,7 @@ public:
     void setHeaders(const std::unordered_map<std::string, std::string>& headerMap)
     {
         std::vector<flatbuffers::Offset<Header>> headerVec;
+        headerVec.reserve(headerMap.size());
 
         for (const auto& entry : headerMap) {
             auto key = flatBuffersBuilder.CreateString(entry.first);
