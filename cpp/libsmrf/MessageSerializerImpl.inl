@@ -110,6 +110,13 @@ public:
         this->encryptionCertificate = std::move(cert);
     }
 
+    void setCustomSigningCallback(std::function<ByteVector(const ByteArrayView&)> signingCallback)
+    {
+        assert(signingCallback);
+        isCustomSigned = true;
+        customSigningCallback = signingCallback;
+    }
+
     ByteVector serialize()
     {
         const bool isEncrypted(encryptionCertificate);
@@ -134,36 +141,37 @@ public:
             }
         }
 
-        constexpr bool isCustomSigned = false;
         flatbuffers::Offset<Message> message =
                 CreateMessage(flatBuffersBuilder, recipient, sender, ttlMs, ttlAbsolute, isSigned, isEncrypted, isCompressed,
                               headers, flatbuffersBody, isCustomSigned);
 
         flatBuffersBuilder.Finish(message);
 
-        if (isSigned) {
-            // create CMS detached signature
-            // append signature at the end
-            // set sigSize to actual value
-        }
-
-        if (isCustomSigned) {
-            // create custom signature
-            // append custom signature at the end
-            // set sigSize to actual value
-        }
-
         const std::size_t flatbufferSize = flatBuffersBuilder.GetSize();
-        const std::size_t finalSize = MessagePrefix::SIZE + flatbufferSize;
+        ByteVector signature;
+        if (isCustomSigned) {
+            auto beginingBufPtr = flatBuffersBuilder.GetBufferPointer();
+            signature = customSigningCallback(ByteArrayView(beginingBufPtr, flatbufferSize));
+        } else if (isSigned) {
+        }
 
+        sigSize = signature.size();
+        std::size_t finalSize = MessagePrefix::SIZE + flatbufferSize + sigSize;
         ByteVector serializedMessage(finalSize);
         MessagePrefix messagePrefix;
         messagePrefix.sigSize = sigSize;
         messagePrefix.msgSize = flatbufferSize;
         messagePrefix.writeToPreallocatedBuffer(serializedMessage);
-        std::memcpy(serializedMessage.data() + MessagePrefix::SIZE, flatBuffersBuilder.GetBufferPointer(), flatbufferSize);
+        const std::size_t flatbuffersOffset = MessagePrefix::SIZE;
+        const std::size_t signatureOffset = flatbuffersOffset + flatbufferSize;
+        std::memcpy(serializedMessage.data() + flatbuffersOffset, flatBuffersBuilder.GetBufferPointer(), flatbufferSize);
+        std::memcpy(serializedMessage.data() + signatureOffset, signature.data(), signature.size());
         return serializedMessage;
     }
+
+    using CustomSigningCallback = std::function<ByteVector(const ByteArrayView&)>;
+    CustomSigningCallback customSigningCallback;
+    bool isCustomSigned = false;
 
 private:
     flatbuffers::FlatBufferBuilder flatBuffersBuilder;

@@ -166,6 +166,17 @@ public:
         return ByteVector();
     }
 
+    ByteArrayView getSignature() const
+    {
+        if (message->isCustomSigned() || message->isSigned()) {
+            const size_t signatureOffset = MessagePrefix::SIZE + messagePrefix.msgSize;
+            const Byte* beginningOfSignature = serializedMessage.data() + signatureOffset;
+            return ByteArrayView(beginningOfSignature, messagePrefix.sigSize);
+        } else {
+            throw EncodingException("message has no signature");
+        }
+    }
+
 private:
     // get the value or a default constructed string if value is not set
     std::string getString(const flatbuffers::String* flatbuffersString) const

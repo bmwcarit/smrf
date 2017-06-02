@@ -202,6 +202,12 @@ public:
      */
     ByteVector decryptBody(std::shared_ptr<const PrivateKey> key) const;
 
+    /* @brief Get SMRF message signature
+     * @throws EncodingException if this message does not have a signature
+     * @return The signature
+     */
+    ByteArrayView getSignature() const;
+
 private:
     std::unique_ptr<MessageDeserializerImpl> pImpl;
 };

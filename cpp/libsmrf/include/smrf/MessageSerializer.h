@@ -21,6 +21,7 @@
 #define SMRF_MESSAGESERIALIZER_H
 
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -177,6 +178,17 @@ public:
      *                          SMRF message.
      */
     ByteVector serialize();
+
+    /*
+     * @brief Set a custom signature algorithm for smrf message
+     *
+     * If this function is called, the supplied callback will be used to get the message signature
+     * instead of using SMRF's default signature.
+     * If this function is not called, the serialized SMRF message will have smrf default
+     * signature
+     * @param signingCallback A callback that is passed the serialized message and which returns the signature
+     */
+    void setCustomSigningCallback(std::function<ByteVector(const ByteArrayView&)> signingCallback);
 
 private:
     std::unique_ptr<MessageSerializerImpl> pImpl;

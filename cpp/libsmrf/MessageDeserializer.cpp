@@ -111,4 +111,9 @@ ByteVector MessageDeserializer::decompressBody() const
     return pImpl->decompressBody();
 }
 
+ByteArrayView MessageDeserializer::getSignature() const
+{
+    return pImpl->getSignature();
+}
+
 } // namespace smrf
