@@ -134,14 +134,22 @@ public:
             }
         }
 
-        flatbuffers::Offset<Message> message = CreateMessage(flatBuffersBuilder, recipient, sender, ttlMs, ttlAbsolute,
-                                                             isSigned, isEncrypted, isCompressed, headers, flatbuffersBody);
+        constexpr bool isCustomSigned = false;
+        flatbuffers::Offset<Message> message =
+                CreateMessage(flatBuffersBuilder, recipient, sender, ttlMs, ttlAbsolute, isSigned, isEncrypted, isCompressed,
+                              headers, flatbuffersBody, isCustomSigned);
 
         flatBuffersBuilder.Finish(message);
 
         if (isSigned) {
             // create CMS detached signature
             // append signature at the end
+            // set sigSize to actual value
+        }
+
+        if (isCustomSigned) {
+            // create custom signature
+            // append custom signature at the end
             // set sigSize to actual value
         }
 

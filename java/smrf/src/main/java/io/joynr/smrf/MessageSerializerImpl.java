@@ -86,6 +86,7 @@ public final class MessageSerializerImpl implements MessageSerializer {
             }
         }
 
+        final boolean isCustomSigned = false;
         final int recipientOffset = flatBuffersBuilder.createString(recipient);
         final int senderOffset = flatBuffersBuilder.createString(sender);
         final int messageOffset = Message.createMessage(flatBuffersBuilder,
@@ -97,7 +98,8 @@ public final class MessageSerializerImpl implements MessageSerializer {
                                                         isEncrypted,
                                                         isCompressed,
                                                         headersOffset,
-                                                        bodyOffset);
+                                                        bodyOffset,
+                                                        isCustomSigned);
 
         flatBuffersBuilder.finish(messageOffset);
         final ByteBuffer messageBuffer = flatBuffersBuilder.dataBuffer();
@@ -106,6 +108,13 @@ public final class MessageSerializerImpl implements MessageSerializer {
         if (isSigned) {
             // TODO
             throw new UnsupportedOperationException("Signature check is not supported");
+        }
+
+        if (isCustomSigned) {
+            // TODO
+            // create custom signature
+            // append signature at the end
+            // set sigSize to actual value
         }
 
         final int flatbufferSize = messageBuffer.remaining();

@@ -73,6 +73,11 @@ public:
         return message->isCompressed();
     }
 
+    bool isCustomSigned() const
+    {
+        return message->isCustomSigned();
+    }
+
     std::string getSender() const
     {
         return getString(message->sender());

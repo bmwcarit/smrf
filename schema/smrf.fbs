@@ -15,6 +15,7 @@ table Message {
    isCompressed: bool = false;
    headers: [Header];
    body: [ubyte];
+   isCustomSigned: bool = false;
 }
 
 root_type Message;

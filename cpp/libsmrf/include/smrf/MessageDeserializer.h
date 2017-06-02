@@ -96,6 +96,13 @@ public:
     bool isCompressed() const;
 
     /**
+     * @brief Check if the given message is custom signed
+     *
+     * @return true if the message has a custom signature. False otherwise.
+     */
+    bool isCustomSigned() const;
+
+    /**
      * @brief Get the CertificateIdentifier of the certificate used to sign this message
      *
      *

@@ -30,6 +30,8 @@ public interface MessageDeserializer {
 
     public boolean isCompressed();
 
+    public boolean isCustomSigned();
+
     public int getMessageSize();
 
     public CertificateIdentifier getSignerCertificateIdentifier();

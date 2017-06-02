@@ -56,6 +56,11 @@ bool MessageDeserializer::isCompressed() const
     return pImpl->isCompressed();
 }
 
+bool MessageDeserializer::isCustomSigned() const
+{
+    return pImpl->isCustomSigned();
+}
+
 std::string MessageDeserializer::getSender() const
 {
     return pImpl->getSender();

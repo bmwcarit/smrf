@@ -34,7 +34,7 @@
 
 using namespace smrf;
 
-TEST(RoundtripTest, notCompressedNotSignedNotEncrypted)
+TEST(RoundtripTest, notCompressedNotSignedNotEncryptedNotCustomSigned)
 {
     const bool isCompressed = false;
     RoundtripMessage message(isCompressed);
@@ -47,10 +47,11 @@ TEST(RoundtripTest, notCompressedNotSignedNotEncrypted)
     EXPECT_EQ(serializedMessageView.size(), deserializer.getMessageSize());
     ASSERT_FALSE(deserializer.isSigned());
     ASSERT_FALSE(deserializer.isEncrypted());
+    ASSERT_FALSE(deserializer.isCustomSigned());
     message.check(deserializer);
 }
 
-TEST(RoundtripTest, compressedNotSignedNotEncrypted)
+TEST(RoundtripTest, compressedNotSignedNotEncryptedNotCustomSigned)
 {
     const bool isCompressed = true;
     RoundtripMessage message(isCompressed);
@@ -58,10 +59,11 @@ TEST(RoundtripTest, compressedNotSignedNotEncrypted)
     message.init(serializer);
 
     const ByteVector& serializedMessage = serializer.serialize();
-    ByteArrayView view(serializedMessage);
-    MessageDeserializer deserializer(view);
-    EXPECT_EQ(view.size(), deserializer.getMessageSize());
+    ByteArrayView serializedMessageView(serializedMessage);
+    MessageDeserializer deserializer(serializedMessageView);
+    EXPECT_EQ(serializedMessageView.size(), deserializer.getMessageSize());
     ASSERT_FALSE(deserializer.isSigned());
     ASSERT_FALSE(deserializer.isEncrypted());
+    ASSERT_FALSE(deserializer.isCustomSigned());
     message.check(deserializer);
 }

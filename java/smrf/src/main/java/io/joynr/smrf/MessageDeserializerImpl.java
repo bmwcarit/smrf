@@ -115,6 +115,10 @@ public final class MessageDeserializerImpl implements MessageDeserializer {
         return message.isCompressed();
     }
 
+    public boolean isCustomSigned() {
+        return message.isCustomSigned();
+    }
+
     public boolean isEncrypted() {
         return message.isEncrypted();
     }
