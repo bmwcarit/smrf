@@ -6,7 +6,8 @@
   "gypfile": true,
   "scripts": {
     "test": "ava -s 'test/*.test.js'",
-    "format": "gulp format"
+    "format": "gulp format",
+    "benchmark": "node test/benchmark.js"
   },
   "repository": {
     "type": "git",
@@ -24,8 +25,10 @@
   },
   "devDependencies": {
     "ava": "0.19.1",
+    "benchmark": "2.1.4",
     "clone": "2.1.1",
     "gulp": "3.9.1",
-    "gulp-clang-format": "1.0.23"
+    "gulp-clang-format": "1.0.23",
+    "microtime": "2.1.5"
   }
 }
