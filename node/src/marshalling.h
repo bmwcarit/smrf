@@ -51,7 +51,7 @@ void convertFromV8(v8::Local<v8::Value> v8Value, bool& value)
 void convertFromV8(v8::Local<v8::Value> v8Value, std::string& value)
 {
     v8::String::Utf8Value stringValue(v8Value->ToString());
-    value = *stringValue;
+    value = std::string(*stringValue, stringValue.length());
 }
 
 template <typename T>
