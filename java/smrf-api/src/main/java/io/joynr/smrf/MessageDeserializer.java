@@ -55,4 +55,6 @@ public interface MessageDeserializer {
     public byte[] getUnencryptedBody() throws EncodingException;
 
     public byte[] decryptBody(PrivateKey key) throws SecurityException;
+
+    public byte[] getSignature() throws EncodingException;
 }

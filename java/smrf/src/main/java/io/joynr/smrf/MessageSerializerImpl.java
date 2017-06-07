@@ -29,6 +29,7 @@ import java.lang.UnsupportedOperationException;
 
 import com.google.flatbuffers.FlatBufferBuilder;
 
+import io.joynr.smrf.MessageSerializer.SigningFunction;
 import smrf.Header;
 import smrf.Message;
 
@@ -46,6 +47,8 @@ public final class MessageSerializerImpl implements MessageSerializer {
     private long ttlMs;
     private Map<String, String> headers = new HashMap<String, String>();
     private byte[] body = new byte[0];
+    private boolean isCustomSigned = false;
+    private SigningFunction customSigningCallback;
 
     public MessageSerializer encryptFor(X509Certificate cert) {
         this.encryptionCertificate = cert;
@@ -86,7 +89,6 @@ public final class MessageSerializerImpl implements MessageSerializer {
             }
         }
 
-        final boolean isCustomSigned = false;
         final int recipientOffset = flatBuffersBuilder.createString(recipient);
         final int senderOffset = flatBuffersBuilder.createString(sender);
         final int messageOffset = Message.createMessage(flatBuffersBuilder,
@@ -104,21 +106,22 @@ public final class MessageSerializerImpl implements MessageSerializer {
         flatBuffersBuilder.finish(messageOffset);
         final ByteBuffer messageBuffer = flatBuffersBuilder.dataBuffer();
 
+        byte[] signature = null;
         int sigSize = 0;
-        if (isSigned) {
+        if (isCustomSigned) {
+            ByteBuffer msgBuffer = flatBuffersBuilder.dataBuffer();
+            signature = customSigningCallback.fn(msgBuffer);
+        } else if (isSigned) {
             // TODO
-            throw new UnsupportedOperationException("Signature check is not supported");
+            throw new UnsupportedOperationException("Only custom signatures are supported at the moment");
         }
 
-        if (isCustomSigned) {
-            // TODO
-            // create custom signature
-            // append signature at the end
-            // set sigSize to actual value
+        if (signature != null) {
+            sigSize = signature.length;
         }
 
         final int flatbufferSize = messageBuffer.remaining();
-        final int finalSize = MessagePrefix.SIZE + flatbufferSize;
+        final int finalSize = MessagePrefix.SIZE + flatbufferSize + sigSize;
 
         MessagePrefix messagePrefix = new MessagePrefix();
         messagePrefix.sigSize = sigSize;
@@ -126,6 +129,10 @@ public final class MessageSerializerImpl implements MessageSerializer {
         final ByteBuffer finalBuffer = ByteBuffer.allocate(finalSize).order(ByteOrder.LITTLE_ENDIAN);
         messagePrefix.writeToPreallocatedBuffer(finalBuffer);
         finalBuffer.put(messageBuffer);
+        if (signature != null) {
+            finalBuffer.put(signature);
+        }
+
         return finalBuffer.array();
     }
 
@@ -168,5 +175,10 @@ public final class MessageSerializerImpl implements MessageSerializer {
         this.signingCertificate = cert;
         this.signingKey = key;
         return this;
+    }
+
+    public void setCustomSigningCallback(SigningFunction signingCallback) {
+        isCustomSigned = true;
+        customSigningCallback = signingCallback;
     }
 }

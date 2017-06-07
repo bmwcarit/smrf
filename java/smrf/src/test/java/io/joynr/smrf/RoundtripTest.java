@@ -18,35 +18,80 @@
  */
 package io.joynr.smrf;
 
+import io.joynr.smrf.MessageSerializer.SigningFunction;
 import io.joynr.smrf.tests.TestMessage;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
+
+
+import java.nio.ByteBuffer;
+
 import org.junit.Test;
 
 public class RoundtripTest {
 
+    public RoundtripTest() {
+        customSignature = "This is a test signature!".getBytes();
+    }
+
+    byte[] customSignature;
+
+    void checkCustomSignature(MessageDeserializer deserializer) throws EncodingException
+    {
+        byte[] signature = deserializer.getSignature();
+        assertEquals(signature.length, customSignature.length);
+        assertArrayEquals(signature, customSignature);
+    }
+
     @Test
     public void notCompressedNotSignedNotEncrypted() throws SecurityException, EncodingException,
                                                     UnsuppportedVersionException {
-        run(false, false, false);
+        run(false, false, false, false);
     }
 
     @Test
     public void compressedNotSignedNotEncrypted() throws SecurityException, EncodingException,
                                                  UnsuppportedVersionException {
-        run(true, false, false);
+        run(true, false, false, false);
     }
 
-    private void run(boolean shouldBeCompressed, boolean isSigned, boolean isEncrypted) throws SecurityException,
+    @Test
+    public void notCompressedNotSignedNotEncryptedCustomSigned() throws SecurityException, EncodingException,
+                                                    UnsuppportedVersionException {
+        run(false, false, false, true);
+    }
+
+    @Test
+    public void compressedNotSignedNotEncryptedCustomSigned() throws SecurityException, EncodingException,
+                                                 UnsuppportedVersionException {
+        run(true, false, false, true);
+    }
+
+    private void run(boolean shouldBeCompressed, boolean isSigned, boolean isEncrypted, boolean isCustomSigned) throws SecurityException,
                                                                                        EncodingException,
                                                                                        UnsuppportedVersionException {
         TestMessage expectedMessage = new TestMessage(shouldBeCompressed);
         MessageSerializer serializer = new MessageSerializerImpl();
         expectedMessage.initSerializer(serializer);
-        byte[] serializedMessage = serializer.serialize();
 
+        if(isCustomSigned) {
+            SigningFunction signingCallback = new SigningFunction() {
+                @Override
+                public byte[] fn(ByteBuffer msgBuffer) {
+                    return customSignature;
+                }
+            };
+            serializer.setCustomSigningCallback(signingCallback);
+        }
+
+        byte[] serializedMessage = serializer.serialize();
         MessageDeserializer deserializer = new MessageDeserializerImpl(serializedMessage);
         TestMessage deserializedMessage = TestMessage.getFromDeserializer(deserializer);
+
+        if(isCustomSigned) {
+            checkCustomSignature(deserializer);
+        }
 
         assertEquals(expectedMessage, deserializedMessage);
         assertEquals(serializedMessage.length, deserializer.getMessageSize());
