@@ -33,34 +33,46 @@
 namespace marshalling
 {
 
-template <std::size_t N>
-v8::Local<v8::Value> getMemberValue(v8::Local<v8::Object> context, const char (&key)[N])
-{
-    Nan::MaybeLocal<v8::Value> maybeValue = Nan::Get(context, util::string(key));
-    if (!maybeValue.IsEmpty()) {
-        v8::Local<v8::Value> value = maybeValue.ToLocalChecked();
-        if (!value->IsUndefined()) {
-            return value;
-        }
-    }
-    throw std::invalid_argument(std::string("member is not set: ") + key);
-}
-
-void convertFromV8(v8::Local<v8::Value> v8Value, bool& value)
+void convertFromV8(const v8::Local<v8::Value>& v8Value, bool& value)
 {
     value = v8Value->BooleanValue();
 }
 
-void convertFromV8(v8::Local<v8::Value> v8Value, std::string& value)
+void convertFromV8(const v8::Local<v8::Value>& v8Value, std::string& value)
 {
     v8::String::Utf8Value stringValue(v8Value->ToString());
     value = std::string(*stringValue, stringValue.length());
 }
 
 template <typename T>
-std::enable_if_t<std::is_arithmetic<T>::value> convertFromV8(v8::Local<v8::Value> v8Value, T& value)
+std::enable_if_t<std::is_arithmetic<T>::value> convertFromV8(const v8::Local<v8::Value>& v8Value, T& value)
 {
     value = v8Value->NumberValue();
+}
+
+v8::Local<v8::Value> getMemberValue(const v8::Local<v8::Object>& context, const v8::Local<v8::String>& key)
+{
+    Nan::MaybeLocal<v8::Value> maybeValue = Nan::Get(context, key);
+    if (!maybeValue.IsEmpty()) {
+        v8::Local<v8::Value> value = maybeValue.ToLocalChecked();
+        if (!value->IsUndefined()) {
+            return value;
+        }
+    }
+    std::string keyStr;
+    convertFromV8(key, keyStr);
+    throw std::invalid_argument(std::string("member is not set: " + keyStr));
+}
+
+v8::Local<v8::Value> getMemberValue(const v8::Local<v8::Object>& context, const Nan::Persistent<v8::String>& key)
+{
+    return getMemberValue(context, Nan::New(key));
+}
+
+template <std::size_t N>
+v8::Local<v8::Value> getMemberValue(const v8::Local<v8::Object>& context, const char (&key)[N])
+{
+    return getMemberValue(context, util::string(key));
 }
 
 } // namespace marshalling

@@ -31,6 +31,7 @@
 #include <smrf/MessageSerializer.h>
 
 #include "MessageDeserializerWrapper.h"
+#include "Strings.h"
 #include "marshalling.h"
 #include "util.h"
 
@@ -56,29 +57,29 @@ NAN_METHOD(serialize)
     bool isTtlAbsolute;
 
     try {
-        convertFromV8(getMemberValue(context, "sender"), sender);
+        convertFromV8(getMemberValue(context, Strings::get().sender), sender);
         serializer.setSender(sender);
 
-        convertFromV8(getMemberValue(context, "recipient"), recipient);
+        convertFromV8(getMemberValue(context, Strings::get().recipient), recipient);
         serializer.setRecipient(recipient);
 
-        convertFromV8(getMemberValue(context, "ttlMs"), ttlMs);
+        convertFromV8(getMemberValue(context, Strings::get().ttlMs), ttlMs);
         serializer.setTtlMs(ttlMs);
 
-        convertFromV8(getMemberValue(context, "isTtlAbsolute"), isTtlAbsolute);
+        convertFromV8(getMemberValue(context, Strings::get().isTtlAbsolute), isTtlAbsolute);
         serializer.setTtlAbsolute(isTtlAbsolute);
 
-        convertFromV8(getMemberValue(context, "isCompressed"), isCompressed);
+        convertFromV8(getMemberValue(context, Strings::get().isCompressed), isCompressed);
         serializer.setCompressed(isCompressed);
 
-        v8::Local<v8::Value> bufferValue = getMemberValue(context, "body");
+        v8::Local<v8::Value> bufferValue = getMemberValue(context, Strings::get().body);
         if (!node::Buffer::HasInstance(bufferValue)) {
             return Nan::ThrowTypeError("'body' must be a buffer");
         }
         smrf::ByteArrayView bufferView = util::bufferToByteArrayView(bufferValue->ToObject());
         serializer.setBody(bufferView);
 
-        v8::Local<v8::Value> headersValue = getMemberValue(context, "headers");
+        v8::Local<v8::Value> headersValue = getMemberValue(context, Strings::get().headers);
         if (!headersValue->IsObject()) {
             return Nan::ThrowTypeError("'headers' must be an object");
         }
@@ -112,6 +113,7 @@ NAN_METHOD(serialize)
 
 NAN_MODULE_INIT(Init)
 {
+    Strings::init();
     MessageDeserializerWrapper::Init(target);
     using namespace Nan;
     Set(target, util::string("serialize"), New<v8::FunctionTemplate>(serialize)->GetFunction());
