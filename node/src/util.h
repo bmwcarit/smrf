@@ -59,9 +59,10 @@ auto bufferToByteArrayView(v8::Local<v8::Object> buffer)
     return smrf::ByteArrayView(bufferPointer, bufferSize);
 }
 
-auto string(const char* str)
+template <std::size_t N>
+auto string(const char (&str)[N])
 {
-    return Nan::New<v8::String>(str).ToLocalChecked();
+    return Nan::New<v8::String>(&str[0], N - 1).ToLocalChecked();
 }
 
 auto viewToBuffer(const smrf::ByteArrayView& view)
