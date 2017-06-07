@@ -28,12 +28,15 @@
 
 #include <nan.h>
 
+#include "util.h"
+
 namespace marshalling
 {
 
-v8::Local<v8::Value> getMemberValue(v8::Local<v8::Object> context, const char* key)
+template <std::size_t N>
+v8::Local<v8::Value> getMemberValue(v8::Local<v8::Object> context, const char (&key)[N])
 {
-    Nan::MaybeLocal<v8::Value> maybeValue = Nan::Get(context, Nan::New(key).ToLocalChecked());
+    Nan::MaybeLocal<v8::Value> maybeValue = Nan::Get(context, util::string(key));
     if (!maybeValue.IsEmpty()) {
         v8::Local<v8::Value> value = maybeValue.ToLocalChecked();
         if (!value->IsUndefined()) {
