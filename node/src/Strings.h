@@ -34,6 +34,7 @@ struct Strings {
     String headers;
     String ttlMs;
     String isTtlAbsolute;
+    String signature;
 
     static auto& get()
     {
@@ -51,6 +52,7 @@ struct Strings {
         get().headers.Reset(util::string("headers"));
         get().ttlMs.Reset(util::string("ttlMs"));
         get().isTtlAbsolute.Reset(util::string("isTtlAbsolute"));
+        get().signature.Reset(util::string("signature"));
     }
 };
 

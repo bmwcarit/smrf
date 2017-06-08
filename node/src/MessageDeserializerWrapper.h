@@ -89,6 +89,11 @@ public:
 
         const bool isTtlAbsolute = deserializer->isTtlAbsolute();
         info.This()->Set(Nan::New(Strings::get().isTtlAbsolute), Nan::New(isTtlAbsolute));
+
+        if (deserializer->isCustomSigned() || deserializer->isSigned()) {
+            v8::Local<v8::Object> signature = util::viewToBuffer(deserializer->getSignature());
+            info.This()->Set(Nan::New(Strings::get().signature), signature);
+        }
     }
 
     static NAN_METHOD(New)

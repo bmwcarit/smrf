@@ -54,9 +54,18 @@ static void bufferFreeCallback(char* data, void* hint)
 
 auto bufferToByteArrayView(v8::Local<v8::Object> buffer)
 {
+    if (!node::Buffer::HasInstance(buffer)) {
+        throw std::invalid_argument("'buffer' must be a buffer");
+    }
     const smrf::Byte* bufferPointer = reinterpret_cast<const smrf::Byte*>(node::Buffer::Data(buffer));
     const std::size_t bufferSize = node::Buffer::Length(buffer);
     return smrf::ByteArrayView(bufferPointer, bufferSize);
+}
+
+auto bufferToByteVector(v8::Local<v8::Value> buffer)
+{
+    smrf::ByteArrayView view = bufferToByteArrayView(buffer->ToObject());
+    return smrf::ByteVector(view.data(), view.data() + view.size());
 }
 
 template <std::size_t N>

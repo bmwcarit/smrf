@@ -26,12 +26,33 @@
 #include <type_traits>
 #include <vector>
 
+#include <boost/optional.hpp>
 #include <nan.h>
 
 #include "util.h"
 
 namespace marshalling
 {
+
+using OptionalV8Value = boost::optional<v8::Local<v8::Value>>;
+
+OptionalV8Value maybeToOptionalValue(Nan::MaybeLocal<v8::Value> maybeValue)
+{
+    OptionalV8Value optionalV8Value;
+    if (!maybeValue.IsEmpty()) {
+        v8::Local<v8::Value> value = maybeValue.ToLocalChecked();
+        if (!value->IsUndefined()) {
+            optionalV8Value = value;
+        }
+    }
+    return optionalV8Value;
+}
+
+OptionalV8Value getOptionalMemberValue(v8::Local<v8::Object> context, const char* key)
+{
+    Nan::MaybeLocal<v8::Value> maybeValue = Nan::Get(context, Nan::New(key).ToLocalChecked());
+    return maybeToOptionalValue(maybeValue);
+}
 
 void convertFromV8(const v8::Local<v8::Value>& v8Value, bool& value)
 {

@@ -19,6 +19,7 @@
 
 #include <cstdint>
 #include <exception>
+#include <functional>
 #include <memory>
 #include <string>
 
@@ -39,6 +40,8 @@ NAN_METHOD(serialize)
 {
     using marshalling::convertFromV8;
     using marshalling::getMemberValue;
+    using marshalling::getOptionalMemberValue;
+    using v8::Local;
 
     const std::size_t requiredArgCount = 1;
 
@@ -47,7 +50,6 @@ NAN_METHOD(serialize)
     }
 
     smrf::MessageSerializer serializer;
-
     // iterate over arguments, pass them on to the serializer
     v8::Local<v8::Object> context = info[0].As<v8::Object>();
     std::string sender;
@@ -55,6 +57,8 @@ NAN_METHOD(serialize)
     std::int64_t ttlMs;
     bool isCompressed;
     bool isTtlAbsolute;
+
+    smrf::ByteVector serializedMessage;
 
     try {
         convertFromV8(getMemberValue(context, Strings::get().sender), sender);
@@ -71,6 +75,25 @@ NAN_METHOD(serialize)
 
         convertFromV8(getMemberValue(context, Strings::get().isCompressed), isCompressed);
         serializer.setCompressed(isCompressed);
+
+        using OptionalV8Value = boost::optional<v8::Local<v8::Value>>;
+        OptionalV8Value cb = getOptionalMemberValue(context, "signingCallback");
+
+        if (cb) {
+            // It MUST NOT copy the argument it is invoked with
+            // it MUST be a synchronous function
+            std::function<smrf::ByteVector(const smrf::ByteArrayView&)> signingCallback =
+                    [&cb, &context](const smrf::ByteArrayView& msg) {
+                        v8::Local<v8::Value> msgBuffer = util::bufferWitNoOpFreeCallback(msg);
+                        const unsigned argc = 1;
+                        v8::Local<v8::Value> argv[] = {msgBuffer};
+                        v8::Local<v8::Value> signatureBuffer = cb->As<v8::Function>()->Call(context, argc, argv);
+                        smrf::ByteVector signature = util::bufferToByteVector(signatureBuffer);
+                        return signature;
+                    };
+
+            serializer.setCustomSigningCallback(std::move(signingCallback));
+        }
 
         v8::Local<v8::Value> bufferValue = getMemberValue(context, Strings::get().body);
         if (!node::Buffer::HasInstance(bufferValue)) {
@@ -102,13 +125,14 @@ NAN_METHOD(serialize)
             }
             serializer.setHeaders(headerMap);
         }
+        // finally, serialize the message
+        serializedMessage = serializer.serialize();
+        // finally, serialize the message and return the resulting buffer
+        info.GetReturnValue().Set(util::byteVectorToBuffer(std::move(serializedMessage)));
 
     } catch (const std::invalid_argument& e) {
         return Nan::ThrowTypeError(e.what());
     }
-
-    // finally, serialize the message and return the resulting buffer
-    info.GetReturnValue().Set(util::byteVectorToBuffer(serializer.serialize()));
 }
 
 NAN_MODULE_INIT(Init)
