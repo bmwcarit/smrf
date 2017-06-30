@@ -44,7 +44,7 @@ public final class MessageDeserializerImpl implements MessageDeserializer {
             throw new UnsuppportedVersionException(messagePrefix.version);
         }
 
-        final int expectedMessageSize = MessagePrefix.SIZE + messagePrefix.msgSize + messagePrefix.sigSize;
+        final long expectedMessageSize = MessagePrefix.SIZE + messagePrefix.msgSize + messagePrefix.sigSize;
         this.serializedMessage = serializedMessage;
         if (serializedMessage.length < expectedMessageSize) {
             throw new EncodingException("message size is wrong");

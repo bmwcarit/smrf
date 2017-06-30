@@ -122,7 +122,7 @@ public:
     {
         const bool isEncrypted(encryptionCertificate);
         const bool isSigned(signingCertificate && signingKey);
-        std::uint32_t sigSize = 0;
+        std::uint16_t sigSize = 0;
 
         flatbuffers::Offset<flatbuffers::Vector<ByteVector::value_type>> flatbuffersBody;
         if (body.size() > 0) {

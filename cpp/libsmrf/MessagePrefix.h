@@ -41,8 +41,8 @@ public:
             throw EncodingException("message size too small");
         }
         read(serializedMessage, VERSION_OFFSET, version);
-        read(serializedMessage, MSG_SIZE_OFFSET, msgSize);
         read(serializedMessage, SIG_SIZE_OFFSET, sigSize);
+        read(serializedMessage, MSG_SIZE_OFFSET, msgSize);
     }
 
     MessagePrefix() = default;
@@ -51,24 +51,24 @@ public:
     {
         assert(buffer.size() >= SIZE);
         write(buffer, VERSION_OFFSET, version);
-        write(buffer, MSG_SIZE_OFFSET, msgSize);
         write(buffer, SIG_SIZE_OFFSET, sigSize);
+        write(buffer, MSG_SIZE_OFFSET, msgSize);
     }
 
-    static constexpr std::uint8_t VERSION = 1;
+    static constexpr std::uint16_t VERSION = 1;
 
-    std::uint8_t version = VERSION;
+    std::uint16_t version = VERSION;
+    std::uint16_t sigSize = 0;
     std::uint32_t msgSize = 0;
-    std::uint32_t sigSize = 0;
 
     static constexpr std::size_t VERSION_OFFSET = 0;
-    static constexpr std::size_t MSG_SIZE_OFFSET = VERSION_OFFSET + sizeof(version);
-    static constexpr std::size_t SIG_SIZE_OFFSET = MSG_SIZE_OFFSET + sizeof(msgSize);
+    static constexpr std::size_t SIG_SIZE_OFFSET = VERSION_OFFSET + sizeof(version);
+    static constexpr std::size_t MSG_SIZE_OFFSET = SIG_SIZE_OFFSET + sizeof(sigSize);
 
     /**
      * Size in bytes of the message prefix
      */
-    static constexpr std::size_t SIZE = SIG_SIZE_OFFSET + sizeof(sigSize);
+    static constexpr std::size_t SIZE = MSG_SIZE_OFFSET + sizeof(msgSize);
 
 private:
     template <typename T>

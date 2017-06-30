@@ -107,7 +107,7 @@ public final class MessageSerializerImpl implements MessageSerializer {
         final ByteBuffer messageBuffer = flatBuffersBuilder.dataBuffer();
 
         byte[] signature = null;
-        int sigSize = 0;
+        short sigSize = 0;
         if (isCustomSigned) {
             ByteBuffer msgBuffer = flatBuffersBuilder.dataBuffer();
             signature = customSigningCallback.fn(msgBuffer);
@@ -117,7 +117,10 @@ public final class MessageSerializerImpl implements MessageSerializer {
         }
 
         if (signature != null) {
-            sigSize = signature.length;
+            if (signature.length > Short.MAX_VALUE) {
+                throw new EncodingException("signature size too large");
+            }
+            sigSize = (short)signature.length;
         }
 
         final int flatbufferSize = messageBuffer.remaining();
