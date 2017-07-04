@@ -1,3 +1,7 @@
+# SMRF 0.2.0
+[C++, Java] Fixed memory alignment issue, by making sure that MessagePrefix is 8 byte aligned.
+This version is not backwards compatible.
+
 # SMRF 0.1.4
 Bugfix in the node module regarding its native part
 
