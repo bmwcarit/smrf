@@ -21,7 +21,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.joynr.smrf</groupId>
 	<artifactId>smrf_parent</artifactId>
-	<version>0.1.4</version>
+	<version>0.2.0</version>
 	<name>SMRF</name>
 	<url>https://github.com/bmwcarit/smrf</url>
 	<description>The Secure Message wRapper Format (SMRF) aims at providing a unified messaging format for communication between heterogenous endpoints.</description>

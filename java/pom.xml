@@ -22,7 +22,7 @@
 	<parent>
 		<groupId>io.joynr.smrf</groupId>
 		<artifactId>smrf_parent</artifactId>
-		<version>0.1.4</version>
+		<version>0.2.0</version>
 	</parent>
 	<artifactId>java</artifactId>
 	<packaging>pom</packaging>

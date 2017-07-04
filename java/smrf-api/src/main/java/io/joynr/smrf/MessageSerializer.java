@@ -18,11 +18,16 @@
  */
 package io.joynr.smrf;
 
+import java.nio.ByteBuffer;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.Map;
 
 public interface MessageSerializer {
+    public interface SigningFunction {
+        byte[] fn(ByteBuffer msgBuffer);
+    }
+
     public MessageSerializer encryptFor(X509Certificate cert);
 
     public byte[] serialize() throws SecurityException, EncodingException;
@@ -42,4 +47,6 @@ public interface MessageSerializer {
     public MessageSerializer setTtlAbsolute(boolean ttlAbsolute);
 
     public MessageSerializer signWith(X509Certificate cert, PrivateKey key);
+
+    public void setCustomSigningCallback(SigningFunction signingCallback);
 }

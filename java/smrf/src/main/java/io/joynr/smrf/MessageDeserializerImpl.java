@@ -21,6 +21,7 @@ package io.joynr.smrf;
 import java.nio.ByteBuffer;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.lang.UnsupportedOperationException;
@@ -35,6 +36,7 @@ public final class MessageDeserializerImpl implements MessageDeserializer {
     private String sender;
     private String recipient;
     private Map<String, String> headers;
+    private byte[] serializedMessage;
 
     public MessageDeserializerImpl(byte[] serializedMessage) throws EncodingException, UnsuppportedVersionException {
         messagePrefix = new MessagePrefix(serializedMessage);
@@ -42,7 +44,8 @@ public final class MessageDeserializerImpl implements MessageDeserializer {
             throw new UnsuppportedVersionException(messagePrefix.version);
         }
 
-        final int expectedMessageSize = MessagePrefix.SIZE + messagePrefix.msgSize + messagePrefix.sigSize;
+        final long expectedMessageSize = MessagePrefix.SIZE + messagePrefix.msgSize + messagePrefix.sigSize;
+        this.serializedMessage = serializedMessage;
         if (serializedMessage.length < expectedMessageSize) {
             throw new EncodingException("message size is wrong");
         }
@@ -115,6 +118,10 @@ public final class MessageDeserializerImpl implements MessageDeserializer {
         return message.isCompressed();
     }
 
+    public boolean isCustomSigned() {
+        return message.isCustomSigned();
+    }
+
     public boolean isEncrypted() {
         return message.isEncrypted();
     }
@@ -133,5 +140,15 @@ public final class MessageDeserializerImpl implements MessageDeserializer {
 
     public boolean verifySignature(X509Certificate cert) {
         throw new UnsupportedOperationException("Not implemented");
+    }
+
+    public byte[] getSignature() throws EncodingException {
+        if(message.isCustomSigned() || message.isSigned()) {
+            final int signatureOffset = MessagePrefix.SIZE + messagePrefix.msgSize;
+            byte[] signature = Arrays.copyOfRange(this.serializedMessage, signatureOffset, signatureOffset + messagePrefix.sigSize);
+            return signature;
+        } else {
+            throw new EncodingException("Message has no signature");
+        }
     }
 }

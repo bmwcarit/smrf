@@ -51,7 +51,8 @@ smrf-cpp:
   - cpp-build-essentials
   - flatbuffers-from-github
  build: |
-    RUN install-packages openssl-devel
+    RUN install-packages openssl-devel \
+    rpm-build
 
 smrf-libfuzzer:
  requires:

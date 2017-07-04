@@ -37,6 +37,18 @@ test('returns buffer', t => {
     t.true(Buffer.isBuffer(serializedMessage));
 });
 
+test('add custom signature to the message', t => {
+    function signingCallback(messageBuffer)
+    {
+        t.pass(1);
+        const customSignature = Buffer.from('This is a test signature!');
+        return customSignature;
+    }
+    message.signingCallback = signingCallback;
+    t.plan(1);
+    const serializedMessage = smrf.serialize(message);
+});
+
 function runMissingPropertyTest(messageWithMissingProperty, missingProperty)
 {
     test('message with missing property "' + missingProperty + '" throws', t => {

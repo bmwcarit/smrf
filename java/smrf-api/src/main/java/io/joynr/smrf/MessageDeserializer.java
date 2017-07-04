@@ -30,6 +30,8 @@ public interface MessageDeserializer {
 
     public boolean isCompressed();
 
+    public boolean isCustomSigned();
+
     public int getMessageSize();
 
     public CertificateIdentifier getSignerCertificateIdentifier();
@@ -53,4 +55,6 @@ public interface MessageDeserializer {
     public byte[] getUnencryptedBody() throws EncodingException;
 
     public byte[] decryptBody(PrivateKey key) throws SecurityException;
+
+    public byte[] getSignature() throws EncodingException;
 }

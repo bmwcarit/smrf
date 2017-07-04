@@ -26,38 +26,74 @@
 #include <type_traits>
 #include <vector>
 
+#include <boost/optional.hpp>
 #include <nan.h>
+
+#include "util.h"
 
 namespace marshalling
 {
 
-v8::Local<v8::Value> getMemberValue(v8::Local<v8::Object> context, const char* key)
+using OptionalV8Value = boost::optional<v8::Local<v8::Value>>;
+
+OptionalV8Value maybeToOptionalValue(Nan::MaybeLocal<v8::Value> maybeValue)
+{
+    OptionalV8Value optionalV8Value;
+    if (!maybeValue.IsEmpty()) {
+        v8::Local<v8::Value> value = maybeValue.ToLocalChecked();
+        if (!value->IsUndefined()) {
+            optionalV8Value = value;
+        }
+    }
+    return optionalV8Value;
+}
+
+OptionalV8Value getOptionalMemberValue(v8::Local<v8::Object> context, const char* key)
 {
     Nan::MaybeLocal<v8::Value> maybeValue = Nan::Get(context, Nan::New(key).ToLocalChecked());
+    return maybeToOptionalValue(maybeValue);
+}
+
+void convertFromV8(const v8::Local<v8::Value>& v8Value, bool& value)
+{
+    value = v8Value->BooleanValue();
+}
+
+void convertFromV8(const v8::Local<v8::Value>& v8Value, std::string& value)
+{
+    v8::String::Utf8Value stringValue(v8Value->ToString());
+    value = std::string(*stringValue, stringValue.length());
+}
+
+template <typename T>
+std::enable_if_t<std::is_arithmetic<T>::value> convertFromV8(const v8::Local<v8::Value>& v8Value, T& value)
+{
+    value = v8Value->NumberValue();
+}
+
+v8::Local<v8::Value> getMemberValue(const v8::Local<v8::Object>& context, const v8::Local<v8::String>& key)
+{
+    Nan::MaybeLocal<v8::Value> maybeValue = Nan::Get(context, key);
     if (!maybeValue.IsEmpty()) {
         v8::Local<v8::Value> value = maybeValue.ToLocalChecked();
         if (!value->IsUndefined()) {
             return value;
         }
     }
-    throw std::invalid_argument(std::string("member is not set: ") + key);
+    std::string keyStr;
+    convertFromV8(key, keyStr);
+    throw std::invalid_argument(std::string("member is not set: " + keyStr));
 }
 
-void convertFromV8(v8::Local<v8::Value> v8Value, bool& value)
+v8::Local<v8::Value> getMemberValue(const v8::Local<v8::Object>& context, const Nan::Persistent<v8::String>& key)
 {
-    value = v8Value->BooleanValue();
+    return getMemberValue(context, Nan::New(key));
 }
 
-void convertFromV8(v8::Local<v8::Value> v8Value, std::string& value)
+template <std::size_t N>
+v8::Local<v8::Value> getMemberValue(const v8::Local<v8::Object>& context, const char (&key)[N])
 {
-    v8::String::Utf8Value stringValue(v8Value->ToString());
-    value = *stringValue;
-}
-
-template <typename T>
-std::enable_if_t<std::is_arithmetic<T>::value> convertFromV8(v8::Local<v8::Value> v8Value, T& value)
-{
-    value = v8Value->NumberValue();
+    return getMemberValue(context, util::string(key));
 }
 
 } // namespace marshalling

@@ -89,4 +89,9 @@ ByteVector MessageSerializer::serialize()
     return pImpl->serialize();
 }
 
+void MessageSerializer::setCustomSigningCallback(std::function<ByteVector(const ByteArrayView&)> signingCallback)
+{
+    pImpl->setCustomSigningCallback(std::move(signingCallback));
+}
+
 } // namespace smrf

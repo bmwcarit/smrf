@@ -31,12 +31,22 @@ public class MessagePrefix {
     /**
      * size of version field in bytes
      */
-    private final static int VERSION_SIZE = 1;
+    private final static int VERSION_SIZE = 2;
+
+    /**
+     * offset of sigSize field in bytes
+     */
+    private final static int SIG_SIZE_OFFSET = VERSION_OFFSET + VERSION_SIZE;
+
+    /**
+     * size of msgSize field in bytes
+     */
+    private final static int SIG_SIZE_SIZE = 2;
 
     /**
      * offset of msgSize field in bytes
      */
-    private final static int MSG_SIZE_OFFSET = VERSION_OFFSET + VERSION_SIZE;
+    private final static int MSG_SIZE_OFFSET = SIG_SIZE_OFFSET + SIG_SIZE_SIZE;
 
     /**
      * size of msgSize field in bytes
@@ -44,28 +54,18 @@ public class MessagePrefix {
     private final static int MSG_SIZE_SIZE = 4;
 
     /**
-     * offset of sigSize field in bytes
-     */
-    private final static int SIG_SIZE_OFFSET = MSG_SIZE_OFFSET + MSG_SIZE_SIZE;
-
-    /**
-     * size of msgSize field in bytes
-     */
-    private final static int SIG_SIZE_SIZE = 4;
-
-    /**
      * size of message prefix in bytes
      */
-    public final static int SIZE = SIG_SIZE_OFFSET + SIG_SIZE_SIZE;
+    public final static int SIZE = MSG_SIZE_OFFSET + MSG_SIZE_SIZE;
 
     /**
      * current version of SMRF message format
      */
-    public final static int VERSION = 1;
+    public final static short VERSION = 1;
 
-    public byte version = VERSION;
+    public short version = VERSION;
+    public short sigSize = 0;
     public int msgSize = 0;
-    public int sigSize = 0;
 
     public MessagePrefix(byte[] serializedMessage) throws EncodingException {
 
@@ -76,9 +76,9 @@ public class MessagePrefix {
         final ByteBuffer prefixBuffer = ByteBuffer.wrap(serializedMessage, VERSION_OFFSET, SIZE)
                                                   .order(ByteOrder.LITTLE_ENDIAN);
 
-        this.version = prefixBuffer.get(VERSION_OFFSET);
+        this.version = prefixBuffer.getShort(VERSION_OFFSET);
+        this.sigSize = prefixBuffer.getShort(SIG_SIZE_OFFSET);
         this.msgSize = prefixBuffer.getInt(MSG_SIZE_OFFSET);
-        this.sigSize = prefixBuffer.getInt(SIG_SIZE_OFFSET);
     }
 
     public MessagePrefix() {
@@ -87,8 +87,8 @@ public class MessagePrefix {
     public void writeToPreallocatedBuffer(ByteBuffer serializedMessage) {
         assert (serializedMessage.capacity() >= SIZE);
 
-        serializedMessage.put(version);
+        serializedMessage.putShort(version);
+        serializedMessage.putShort(sigSize);
         serializedMessage.putInt(msgSize);
-        serializedMessage.putInt(sigSize);
     }
 }

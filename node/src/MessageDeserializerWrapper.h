@@ -25,6 +25,7 @@
 #include <smrf/MessageDeserializer.h>
 #include <smrf/exceptions.h>
 
+#include "Strings.h"
 #include "util.h"
 
 class MessageDeserializerWrapper : public Nan::ObjectWrap
@@ -44,12 +45,8 @@ public:
             return;
         }
 
-        auto setMember = [&](const char* memberKey, auto&& memberValue) {
-            info.This()->Set(util::string(memberKey), memberValue);
-        };
-
         v8::Local<v8::Object> serializedMessage = bufferValue->ToObject();
-        setMember("serializedMessage", serializedMessage);
+        info.This()->Set(Nan::New(Strings::get().serializedMessage), serializedMessage);
 
         smrf::ByteArrayView serializedMessageView = util::bufferToByteArrayView(serializedMessage);
 
@@ -61,7 +58,7 @@ public:
         }
 
         const bool isCompressed = deserializer->isCompressed();
-        setMember("isCompressed", Nan::New(isCompressed));
+        info.This()->Set(Nan::New(Strings::get().isCompressed), Nan::New(isCompressed));
 
         if (!deserializer->isEncrypted()) {
             v8::Local<v8::Object> bodyBuffer;
@@ -70,28 +67,33 @@ public:
             } else {
                 bodyBuffer = util::byteVectorToBuffer(deserializer->decompressBody());
             }
-            setMember("body", bodyBuffer);
+            info.This()->Set(Nan::New(Strings::get().body), bodyBuffer);
         } else {
             Nan::ThrowError("encryption not yet supported");
             return;
         }
 
-        setMember("sender", util::viewToString(deserializer->getRawSender()));
-        setMember("recipient", util::viewToString(deserializer->getRawRecipient()));
+        info.This()->Set(Nan::New(Strings::get().sender), util::viewToString(deserializer->getRawSender()));
+        info.This()->Set(Nan::New(Strings::get().recipient), util::viewToString(deserializer->getRawRecipient()));
 
         v8::Local<v8::Object> headers = Nan::New<v8::Object>();
         std::vector<std::pair<smrf::ByteArrayView, smrf::ByteArrayView>> rawHeaders = deserializer->getRawHeaders();
         for (const auto& header : rawHeaders) {
             headers->Set(util::viewToString(header.first), util::viewToString(header.second));
         }
-        setMember("headers", headers);
+        info.This()->Set(Nan::New(Strings::get().headers), headers);
 
         // JS Number type is a double internally
         const double ttlMs = static_cast<double>(deserializer->getTtlMs());
-        setMember("ttlMs", Nan::New(ttlMs));
+        info.This()->Set(Nan::New(Strings::get().ttlMs), Nan::New(ttlMs));
 
         const bool isTtlAbsolute = deserializer->isTtlAbsolute();
-        setMember("isTtlAbsolute", Nan::New(isTtlAbsolute));
+        info.This()->Set(Nan::New(Strings::get().isTtlAbsolute), Nan::New(isTtlAbsolute));
+
+        if (deserializer->isCustomSigned() || deserializer->isSigned()) {
+            v8::Local<v8::Object> signature = util::viewToBuffer(deserializer->getSignature());
+            info.This()->Set(Nan::New(Strings::get().signature), signature);
+        }
     }
 
     static NAN_METHOD(New)

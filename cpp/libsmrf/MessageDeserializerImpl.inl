@@ -73,6 +73,11 @@ public:
         return message->isCompressed();
     }
 
+    bool isCustomSigned() const
+    {
+        return message->isCustomSigned();
+    }
+
     std::string getSender() const
     {
         return getString(message->sender());
@@ -108,6 +113,7 @@ public:
         std::unordered_map<std::string, std::string> headers;
         const flatbuffers::Vector<flatbuffers::Offset<Header>>* flatbuffersHeaders = message->headers();
         if (flatbuffersHeaders != nullptr) {
+            headers.reserve(flatbuffersHeaders->size());
             for (const Header* entry : *flatbuffersHeaders) {
                 // only insert entries with non-empty key and value
                 const flatbuffers::String* key = entry->key();
@@ -159,6 +165,17 @@ public:
             return zlib::decompress(ByteArrayView(message->body()->Data(), message->body()->size()));
         }
         return ByteVector();
+    }
+
+    ByteArrayView getSignature() const
+    {
+        if (message->isCustomSigned() || message->isSigned()) {
+            const size_t signatureOffset = MessagePrefix::SIZE + messagePrefix.msgSize;
+            const Byte* beginningOfSignature = serializedMessage.data() + signatureOffset;
+            return ByteArrayView(beginningOfSignature, messagePrefix.sigSize);
+        } else {
+            throw EncodingException("message has no signature");
+        }
     }
 
 private:

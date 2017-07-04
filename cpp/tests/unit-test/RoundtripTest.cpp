@@ -34,7 +34,29 @@
 
 using namespace smrf;
 
-TEST(RoundtripTest, notCompressedNotSignedNotEncrypted)
+class RoundtripTest : public ::testing::Test
+{
+public:
+    RoundtripTest()
+    {
+        customSignature = {'T', 'h', 'i', 's', ' ', 'i', 's', ' ', 'a', ' ', 't', 'e', 's',
+                           't', ' ', 's', 'i', 'g', 'n', 'a', 't', 'u', 'r', 'e', '!'};
+    }
+
+protected:
+    void checkCustomSignature(const smrf::MessageDeserializer& deserializer)
+    {
+        ByteArrayView signature = deserializer.getSignature();
+        ASSERT_EQ(customSignature.size(), signature.size());
+
+        for (std::size_t i = 0; i < customSignature.size(); ++i) {
+            EXPECT_EQ(customSignature[i], *(signature.data() + i));
+        }
+    }
+    ByteVector customSignature;
+};
+
+TEST_F(RoundtripTest, notCompressedNotSignedNotEncryptedNotCustomSigned)
 {
     const bool isCompressed = false;
     RoundtripMessage message(isCompressed);
@@ -47,10 +69,11 @@ TEST(RoundtripTest, notCompressedNotSignedNotEncrypted)
     EXPECT_EQ(serializedMessageView.size(), deserializer.getMessageSize());
     ASSERT_FALSE(deserializer.isSigned());
     ASSERT_FALSE(deserializer.isEncrypted());
+    ASSERT_FALSE(deserializer.isCustomSigned());
     message.check(deserializer);
 }
 
-TEST(RoundtripTest, compressedNotSignedNotEncrypted)
+TEST_F(RoundtripTest, compressedNotSignedNotEncryptedNotCustomSigned)
 {
     const bool isCompressed = true;
     RoundtripMessage message(isCompressed);
@@ -58,10 +81,51 @@ TEST(RoundtripTest, compressedNotSignedNotEncrypted)
     message.init(serializer);
 
     const ByteVector& serializedMessage = serializer.serialize();
-    ByteArrayView view(serializedMessage);
-    MessageDeserializer deserializer(view);
-    EXPECT_EQ(view.size(), deserializer.getMessageSize());
+    ByteArrayView serializedMessageView(serializedMessage);
+    MessageDeserializer deserializer(serializedMessageView);
+    EXPECT_EQ(serializedMessageView.size(), deserializer.getMessageSize());
     ASSERT_FALSE(deserializer.isSigned());
     ASSERT_FALSE(deserializer.isEncrypted());
+    ASSERT_FALSE(deserializer.isCustomSigned());
+    message.check(deserializer);
+}
+
+TEST_F(RoundtripTest, notCompressedNotEncryptedCustomSigned)
+{
+    const bool isCompressed = false;
+    RoundtripMessage message(isCompressed);
+    MessageSerializer serializer;
+    message.init(serializer);
+    auto signingCallback = [this](const ByteArrayView&) { return customSignature; };
+    serializer.setCustomSigningCallback(signingCallback);
+
+    const ByteVector& serializedMessage = serializer.serialize();
+    ByteArrayView serializedMessageView(serializedMessage);
+    MessageDeserializer deserializer(serializedMessageView);
+    EXPECT_EQ(serializedMessageView.size(), deserializer.getMessageSize());
+    ASSERT_FALSE(deserializer.isSigned());
+    ASSERT_FALSE(deserializer.isEncrypted());
+    ASSERT_TRUE(deserializer.isCustomSigned());
+    checkCustomSignature(deserializer);
+    message.check(deserializer);
+}
+
+TEST_F(RoundtripTest, compressedNotEncryptedCustomSigned)
+{
+    const bool isCompressed = true;
+    RoundtripMessage message(isCompressed);
+    MessageSerializer serializer;
+    message.init(serializer);
+    auto signingCallback = [this](const ByteArrayView&) { return customSignature; };
+    serializer.setCustomSigningCallback(signingCallback);
+
+    const ByteVector& serializedMessage = serializer.serialize();
+    ByteArrayView serializedMessageView(serializedMessage);
+    MessageDeserializer deserializer(serializedMessageView);
+    EXPECT_EQ(serializedMessageView.size(), deserializer.getMessageSize());
+    ASSERT_FALSE(deserializer.isSigned());
+    ASSERT_FALSE(deserializer.isEncrypted());
+    ASSERT_TRUE(deserializer.isCustomSigned());
+    checkCustomSignature(deserializer);
     message.check(deserializer);
 }

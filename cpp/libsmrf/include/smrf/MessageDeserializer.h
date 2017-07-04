@@ -96,6 +96,13 @@ public:
     bool isCompressed() const;
 
     /**
+     * @brief Check if the given message is custom signed
+     *
+     * @return true if the message has a custom signature. False otherwise.
+     */
+    bool isCustomSigned() const;
+
+    /**
      * @brief Get the CertificateIdentifier of the certificate used to sign this message
      *
      *
@@ -194,6 +201,12 @@ public:
      *                          (e.g., while uncompressing of compressed messages)
      */
     ByteVector decryptBody(std::shared_ptr<const PrivateKey> key) const;
+
+    /* @brief Get SMRF message signature
+     * @throws EncodingException if this message does not have a signature
+     * @return The signature
+     */
+    ByteArrayView getSignature() const;
 
 private:
     std::unique_ptr<MessageDeserializerImpl> pImpl;

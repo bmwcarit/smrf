@@ -6,4 +6,4 @@ set -x -e
 
 cd /data/src
 
-mvn test
+mvn -B test

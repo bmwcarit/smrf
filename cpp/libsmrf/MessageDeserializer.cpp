@@ -56,6 +56,11 @@ bool MessageDeserializer::isCompressed() const
     return pImpl->isCompressed();
 }
 
+bool MessageDeserializer::isCustomSigned() const
+{
+    return pImpl->isCustomSigned();
+}
+
 std::string MessageDeserializer::getSender() const
 {
     return pImpl->getSender();
@@ -104,6 +109,11 @@ const ByteArrayView MessageDeserializer::getBody() const
 ByteVector MessageDeserializer::decompressBody() const
 {
     return pImpl->decompressBody();
+}
+
+ByteArrayView MessageDeserializer::getSignature() const
+{
+    return pImpl->getSignature();
 }
 
 } // namespace smrf

@@ -51,9 +51,9 @@ public class MessagePrefixTest {
     @Test
     public void roundtrip() throws EncodingException {
         MessagePrefix expectedMessagePrefix = new MessagePrefix();
-        expectedMessagePrefix.version = Byte.MAX_VALUE;
+        expectedMessagePrefix.version = Short.MAX_VALUE;
+        expectedMessagePrefix.sigSize = Short.MAX_VALUE;
         expectedMessagePrefix.msgSize = Integer.MAX_VALUE;
-        expectedMessagePrefix.sigSize = Integer.MAX_VALUE;
 
         ByteBuffer buffer = ByteBuffer.allocate(MessagePrefix.SIZE).order(ByteOrder.LITTLE_ENDIAN);
         expectedMessagePrefix.writeToPreallocatedBuffer(buffer);

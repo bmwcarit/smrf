@@ -16,14 +16,26 @@
  * limitations under the License.
  * #L%
  */
-package io.joynr.smrf;
+'use strict';
 
-@SuppressWarnings("serial")
-public class UnsuppportedVersionException extends Exception {
-    public short version;
+const smrf = require('..');
+const Benchmark = require('benchmark');
+const message = require('./message.helper.js');
 
-    public UnsuppportedVersionException(final short version) {
-        super("unsupported SMRF version");
-        this.version = version;
-    }
-}
+const suite = new Benchmark.Suite();
+
+const serializedMessage = smrf.serialize(message);
+
+suite.add('serialize',
+          function() {
+              return smrf.serialize(message);
+          })
+        .add('deserialize',
+             function() {
+                 return smrf.deserialize(serializedMessage);
+             })
+        .on('cycle',
+            function(event) {
+                console.log(String(event.target));
+            })
+        .run({'async' : false});
