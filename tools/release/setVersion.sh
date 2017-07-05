@@ -19,9 +19,10 @@ newVersion=$2
 oldVersionWithoutSuffix=`echo $oldVersion | sed -e "s/-.*//g"`
 newVersionWithoutSuffix=`echo $newVersion | sed -e "s/-.*//g"`
 
-## CPP version change
+## CPP and RPM version change
 _sed 's/'$oldVersionWithoutSuffix'/'$newVersionWithoutSuffix'/g' \
-CMakeLists.txt
+CMakeLists.txt \
+cpp/distribution/smrf.spec
 
 ## Java version change
 mvn versions:set -DnewVersion=$2
