@@ -16,8 +16,8 @@ function _sed {
 
 oldVersion=$1
 newVersion=$2
-oldVersionWithoutSuffix=`echo $oldVersion | sed -e "s/-.\+//g"`
-newVersionWithoutSuffix=`echo $newVersion | sed -e "s/-.\+//g"`
+oldVersionWithoutSuffix=`echo $oldVersion | sed -e "s/-.*//g"`
+newVersionWithoutSuffix=`echo $newVersion | sed -e "s/-.*//g"`
 
 ## CPP version change
 _sed 's/'$oldVersionWithoutSuffix'/'$newVersionWithoutSuffix'/g' \
