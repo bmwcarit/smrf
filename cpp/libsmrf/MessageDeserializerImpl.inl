@@ -207,7 +207,7 @@ private:
                 throw EncodingException("wrong version");
             }
 
-            const std::size_t expectedMessageSize = MessagePrefix::SIZE + messagePrefix.msgSize + messagePrefix.sigSize;
+            const std::uint64_t expectedMessageSize = MessagePrefix::SIZE + messagePrefix.msgSize + messagePrefix.sigSize;
             if (serializedMessage.size() < expectedMessageSize) {
                 throw EncodingException("wrong size");
             }

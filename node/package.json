@@ -1,10 +1,12 @@
 {
   "name": "smrf-native",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Node.js wrapper for libsmrf",
   "main": "main.js",
   "gypfile": true,
   "scripts": {
+    "preinstall": "npm install node-gyp@3.6.2",
+    "install": "node-gyp rebuild",
     "test": "ava -s 'test/*.test.js'",
     "format": "gulp format",
     "benchmark": "node test/benchmark.js"
@@ -20,8 +22,7 @@
   "homepage": "https://github.com/bmwcarit/smrf/node/#readme",
   "dependencies": {
     "bindings": "1.2.1",
-    "nan": "2.6.2",
-    "node-gyp": "3.6.0"
+    "nan": "2.6.2"
   },
   "devDependencies": {
     "ava": "0.19.1",
