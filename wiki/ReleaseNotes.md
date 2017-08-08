@@ -1,3 +1,7 @@
+# SMRF 0.2.1
+[C++] Fixed potential integer overflow in deserializer.<br/>
+[JS] Updated and cleaned up the project's dependencies.
+
 # SMRF 0.2.0
 [C++, Java] Fixed memory alignment issue, by making sure that MessagePrefix is 8 byte aligned.
 This version is not backwards compatible.
