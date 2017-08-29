@@ -30,6 +30,6 @@
     "clone": "2.1.1",
     "gulp": "3.9.1",
     "gulp-clang-format": "1.0.23",
-    "microtime": "2.1.5"
+    "microtime": "2.1.6"
   }
 }
