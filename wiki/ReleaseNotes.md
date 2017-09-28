@@ -1,5 +1,6 @@
 # SMRF 0.x.x
 [JS] Updated dev dependency `microtime` to 2.1.6.
+[JS] Fixed potential problem wrt. unhandled C++ exceptions.
 
 # SMRF 0.2.1
 [C++] Fixed potential integer overflow in deserializer.<br/>
