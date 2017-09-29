@@ -1,4 +1,4 @@
-# SMRF 0.x.x
+# SMRF 0.2.2
 [JS] Updated dev dependency `microtime` to 2.1.6.
 [JS] Fixed potential problem wrt. unhandled C++ exceptions.
 

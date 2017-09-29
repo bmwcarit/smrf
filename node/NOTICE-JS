@@ -16,6 +16,6 @@ under the License.
 
 This project has the following dependencies:
 
-└─ smrf-native (0.2.1) ── Apache License 2.0 (http://www.apache.org/licenses/LICENSE-2.0, http://www.opensource.org/licenses/Apache-2.0) ── package.json
+└─ smrf-native (0.2.2) ── Apache License 2.0 (http://www.apache.org/licenses/LICENSE-2.0, http://www.opensource.org/licenses/Apache-2.0) ── package.json
    ├─ bindings (1.2.1) ── MIT License (http://www.opensource.org/licenses/MIT) ── node_modules/bindings/package.json
    └─ nan (2.6.2) ── MIT License (http://www.opensource.org/licenses/MIT) ── node_modules/nan/package.json
