@@ -52,47 +52,47 @@ public:
 
         try {
             deserializer = std::make_unique<smrf::MessageDeserializer>(serializedMessageView);
+
+            const bool isCompressed = deserializer->isCompressed();
+            info.This()->Set(Nan::New(Strings::get().isCompressed), Nan::New(isCompressed));
+
+            if (!deserializer->isEncrypted()) {
+                v8::Local<v8::Object> bodyBuffer;
+                if (!isCompressed) {
+                    bodyBuffer = util::viewToBuffer(deserializer->getBody());
+                } else {
+                    bodyBuffer = util::byteVectorToBuffer(deserializer->decompressBody());
+                }
+                info.This()->Set(Nan::New(Strings::get().body), bodyBuffer);
+            } else {
+                Nan::ThrowError("encryption not yet supported");
+                return;
+            }
+
+            info.This()->Set(Nan::New(Strings::get().sender), util::viewToString(deserializer->getRawSender()));
+            info.This()->Set(Nan::New(Strings::get().recipient), util::viewToString(deserializer->getRawRecipient()));
+
+            v8::Local<v8::Object> headers = Nan::New<v8::Object>();
+            std::vector<std::pair<smrf::ByteArrayView, smrf::ByteArrayView>> rawHeaders = deserializer->getRawHeaders();
+            for (const auto& header : rawHeaders) {
+                headers->Set(util::viewToString(header.first), util::viewToString(header.second));
+            }
+            info.This()->Set(Nan::New(Strings::get().headers), headers);
+
+            // JS Number type is a double internally
+            const double ttlMs = static_cast<double>(deserializer->getTtlMs());
+            info.This()->Set(Nan::New(Strings::get().ttlMs), Nan::New(ttlMs));
+
+            const bool isTtlAbsolute = deserializer->isTtlAbsolute();
+            info.This()->Set(Nan::New(Strings::get().isTtlAbsolute), Nan::New(isTtlAbsolute));
+
+            if (deserializer->isCustomSigned() || deserializer->isSigned()) {
+                v8::Local<v8::Object> signature = util::viewToBuffer(deserializer->getSignature());
+                info.This()->Set(Nan::New(Strings::get().signature), signature);
+            }
         } catch (const smrf::EncodingException& e) {
             Nan::ThrowError(e.what());
             return;
-        }
-
-        const bool isCompressed = deserializer->isCompressed();
-        info.This()->Set(Nan::New(Strings::get().isCompressed), Nan::New(isCompressed));
-
-        if (!deserializer->isEncrypted()) {
-            v8::Local<v8::Object> bodyBuffer;
-            if (!isCompressed) {
-                bodyBuffer = util::viewToBuffer(deserializer->getBody());
-            } else {
-                bodyBuffer = util::byteVectorToBuffer(deserializer->decompressBody());
-            }
-            info.This()->Set(Nan::New(Strings::get().body), bodyBuffer);
-        } else {
-            Nan::ThrowError("encryption not yet supported");
-            return;
-        }
-
-        info.This()->Set(Nan::New(Strings::get().sender), util::viewToString(deserializer->getRawSender()));
-        info.This()->Set(Nan::New(Strings::get().recipient), util::viewToString(deserializer->getRawRecipient()));
-
-        v8::Local<v8::Object> headers = Nan::New<v8::Object>();
-        std::vector<std::pair<smrf::ByteArrayView, smrf::ByteArrayView>> rawHeaders = deserializer->getRawHeaders();
-        for (const auto& header : rawHeaders) {
-            headers->Set(util::viewToString(header.first), util::viewToString(header.second));
-        }
-        info.This()->Set(Nan::New(Strings::get().headers), headers);
-
-        // JS Number type is a double internally
-        const double ttlMs = static_cast<double>(deserializer->getTtlMs());
-        info.This()->Set(Nan::New(Strings::get().ttlMs), Nan::New(ttlMs));
-
-        const bool isTtlAbsolute = deserializer->isTtlAbsolute();
-        info.This()->Set(Nan::New(Strings::get().isTtlAbsolute), Nan::New(isTtlAbsolute));
-
-        if (deserializer->isCustomSigned() || deserializer->isSigned()) {
-            v8::Local<v8::Object> signature = util::viewToBuffer(deserializer->getSignature());
-            info.This()->Set(Nan::New(Strings::get().signature), signature);
         }
     }
 
