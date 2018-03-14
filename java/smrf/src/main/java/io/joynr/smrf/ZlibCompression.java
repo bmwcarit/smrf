@@ -32,6 +32,8 @@ public class ZlibCompression {
         void setInput(byte[] input);
 
         int process(byte[] output) throws DataFormatException;
+
+        void end();
     }
 
     private static final class Compressor implements Processor {
@@ -49,6 +51,10 @@ public class ZlibCompression {
         public int process(byte[] output) {
             return deflater.deflate(output);
         }
+
+        public void end() {
+            deflater.end();
+        }
     }
 
     private static final class Decompressor implements Processor {
@@ -65,6 +71,10 @@ public class ZlibCompression {
         public int process(byte[] output) throws DataFormatException {
             return inflater.inflate(output);
         }
+
+        public void end() {
+            inflater.end();
+        }
     }
 
     private static <T extends Processor> byte[] process(T processor, byte[] input) throws DataFormatException,
@@ -77,6 +87,7 @@ public class ZlibCompression {
             outputStream.write(buffer, 0, compressedBytes);
         }
         outputStream.close();
+        processor.end();
         return outputStream.toByteArray();
     }
 
