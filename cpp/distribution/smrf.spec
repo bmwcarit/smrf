@@ -2,7 +2,7 @@
 BuildRoot:      /data/build/smrf/package/RPM/smrf
 Summary:        smrf base package including executables, libraries and default settings
 Name:           smrf
-Version:        0.2.2
+Version:        0.2.3
 Release:        1
 License:        Apache License, Version 2.0
 Group:          unknown

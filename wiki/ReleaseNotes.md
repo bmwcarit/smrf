@@ -1,3 +1,6 @@
+# SMRF 0.2.3
+[Java] explicitly free resources when performing zlib (de-)compression
+
 # SMRF 0.2.2
 [JS] Updated dev dependency `microtime` to 2.1.6.
 [JS] Fixed potential problem wrt. unhandled C++ exceptions.
