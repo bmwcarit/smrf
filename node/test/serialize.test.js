@@ -66,3 +66,12 @@ for (var key in message) {
         runMissingPropertyTest(messageWithMissingProperty, key);
     }
 }
+
+test('message with ttl as string throws', t => {
+    let corruptedMessage = clone(message);
+    corruptedMessage.ttlMs = "blubber";
+    const error = t.throws(() => {
+        smrf.serialize(corruptedMessage);
+    }, TypeError);
+    t.is(error.message, 'value is not a number: ' + corruptedMessage.ttlMs);
+});
