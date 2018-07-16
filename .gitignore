@@ -1,6 +1,8 @@
 /cpp/flatbuffers_generated/
-/node/node_modules/
-/node/build/
+node_modules/
+.idea/
+.vscode/
+/javascript/smrf-native/build/
 /compatibility-tests/node/node_modules/
 target/
 .classpath
