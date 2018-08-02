@@ -20,7 +20,7 @@
 
 const fs = require('fs');
 const smrf = require('smrf-native');
-const message = require('../../node/test/message.helper.js');
+const message = require('../../javascript/test/message.helper.js');
 const options = require('./options.js');
 
 message.isCompressed = options.compressed;
