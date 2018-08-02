@@ -49,9 +49,7 @@ function runRoundtripTest(expectedMessage, t, isCustomSigned) {
     if (isCustomSigned) {
         checkCustomSignature(deserializedMessage, t);
     }
-    t.is(serializedBuffer, deserializedMessage.serializedMessage);
     roundtripCompare(expectedMessage, deserializedMessage, t);
-
 }
 
 test('not compressed', t => {
