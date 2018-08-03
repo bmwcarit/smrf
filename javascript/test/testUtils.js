@@ -1,7 +1,7 @@
 /*
  * #%L
  * %%
- * Copyright (C) 2017 BMW Car IT GmbH
+ * Copyright (C) 2018 BMW Car IT GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,22 +18,10 @@
  */
 'use strict';
 
-const smrf = require('./testUtils').getSmrf();
-const Benchmark = require('benchmark');
-const message = require('./message.helper.js');
+const path = require('path');
+const smrf = require(path.join(process.env.PWD, '../..'));
+const testUtils = {
+    getSmrf: () => smrf
+};
 
-const suite = new Benchmark.Suite();
-
-const serializedMessage = smrf.serialize(message);
-
-suite
-    .add('serialize', () => {
-        return smrf.serialize(message);
-    })
-    .add('deserialize', () => {
-        return smrf.deserialize(serializedMessage);
-    })
-    .on('cycle', event => {
-        console.log(String(event.target));
-    })
-    .run({ async: false });
+module.exports = testUtils;

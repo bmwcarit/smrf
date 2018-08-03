@@ -7,9 +7,9 @@
   "scripts": {
     "preinstall": "npm install node-gyp@3.6.2 --no-save",
     "install": "node-gyp rebuild",
-    "test": "ava -s 'test/*.test.js'",
+    "test": "cd node_modules/smrf-test && npm test",
     "format": "gulp --gulpfile ../common/gulpfile format",
-    "benchmark": "node test/benchmark.js"
+    "benchmark": "cd node_modules/smrf-test && npm run benchmark"
   },
   "repository": {
     "type": "git",
@@ -25,9 +25,7 @@
     "nan": "2.10.0"
   },
   "devDependencies": {
-    "ava": "0.19.1",
-    "benchmark": "2.1.4",
-    "clone": "2.1.1",
+    "smrf-test": "file:../test",
     "gulp": "3.9.1",
     "gulp-clang-format": "1.0.23"
   }

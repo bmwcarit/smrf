@@ -19,7 +19,7 @@
 'use strict';
 
 import test from 'ava';
-const smrf = require('..');
+const smrf = require('./testUtils').getSmrf();
 
 const expectedErrorMessage = 'argument must be a buffer';
 

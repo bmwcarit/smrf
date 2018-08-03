@@ -3,19 +3,9 @@
   "version": "0.2.3",
   "description": "javascript implementation of smrf",
   "main": "main.js",
-  "gypfile": true,
-  "ava":{
-    "files": [
-      "test/*.test.js"
-    ],
-    "failFast": true,
-    "serial": true,
-    "verbose": true
-  },
   "scripts": {
-    "test": "node node_modules/.bin/ava",
-    "format": "gulp --gulpfile ../common/gulpfile format",
-    "benchmark": "node test/benchmark.js"
+    "test": "cd node_modules/smrf-test && npm test",
+    "benchmark": "cd node_modules/smrf-test && npm run benchmark"
   },
   "repository": {
     "type": "git",
@@ -30,9 +20,7 @@
     "flatbuffers": "1.9.0"
   },
   "devDependencies": {
-    "ava": "1.0.0-beta.6",
-    "benchmark": "2.1.4",
-    "clone": "2.1.1",
+    "smrf-test": "file:../test",
     "eslint": "4.19.1",
     "eslint-plugin-promise": "3.7.0",
     "gulp": "3.9.1",

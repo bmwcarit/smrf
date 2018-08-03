@@ -20,7 +20,7 @@
 
 import test from 'ava';
 const clone = require('clone');
-const smrf = require('..');
+const smrf = require('./testUtils').getSmrf();
 const message = require('./message.helper.js');
 
 const errorMessageWrongArgumentCount = 'invalid number of arguments';

@@ -1,0 +1,30 @@
+{
+  "name": "smrf-test",
+  "description": "Tests for smrf-js and smrf-native",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bmwcarit/smrf.git"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/bmwcarit/smrf/issues"
+  },
+  "scripts": {
+    "test": "ava -s '*.test.js'",
+    "benchmark": "node benchmark.js"
+  },
+  "ava": {
+    "files": [
+      "test/*.test.js"
+    ],
+    "failFast": true,
+    "serial": true,
+    "verbose": true
+  },
+  "homepage": "https://github.com/bmwcarit/smrf/node/#readme",
+  "dependencies": {
+    "ava": "0.19.1",
+    "benchmark": "2.1.4",
+    "clone": "2.1.1"
+  }
+}
