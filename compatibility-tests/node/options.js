@@ -19,8 +19,8 @@
 'use strict';
 
 const options = {
-    path : process.env.npm_package_config_path,
-    compressed : process.env.npm_package_config_compressed == 'compressed'
+    path: process.env.npm_package_config_path,
+    compressed: process.env.npm_package_config_compressed == 'compressed'
 };
 
 module.exports = options;

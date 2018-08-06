@@ -26,16 +26,14 @@ const suite = new Benchmark.Suite();
 
 const serializedMessage = smrf.serialize(message);
 
-suite.add('serialize',
-          function() {
-              return smrf.serialize(message);
-          })
-        .add('deserialize',
-             function() {
-                 return smrf.deserialize(serializedMessage);
-             })
-        .on('cycle',
-            function(event) {
-                console.log(String(event.target));
-            })
-        .run({'async' : false});
+suite
+    .add('serialize', () => {
+        return smrf.serialize(message);
+    })
+    .add('deserialize', () => {
+        return smrf.deserialize(serializedMessage);
+    })
+    .on('cycle', event => {
+        console.log(String(event.target));
+    })
+    .run({ async: false });
