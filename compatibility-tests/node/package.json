@@ -4,7 +4,8 @@
   "description": "compatibility tests",
   "config": {
     "path": "",
-    "compressed": "uncompressed"
+    "compressed": "uncompressed",
+    "smrf": "native"
   },
   "scripts": {
     "serializer": "node serializer.js",
@@ -12,7 +13,8 @@
   },
   "dependencies": {
     "stdio": "0.2.7",
-    "smrf-native": "*",
+    "smrf-native": "file:../../javascript/smrf-native",
+    "smrf": "file:../../javascript/smrf-javascript",
     "ava": "0.19.1"
   }
 }

@@ -21,10 +21,10 @@
 import test from 'ava';
 const fs = require('fs');
 const stdio = require('stdio');
-const smrf = require('smrf-native');
 const roundtripCompare = require('../../javascript/test/roundtrip.helper.js');
 const message = require('../../javascript/test/message.helper.js');
 const options = require('./options.js');
+const smrf = options.smrf;
 
 message.isCompressed = options.compressed;
 

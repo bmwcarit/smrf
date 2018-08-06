@@ -19,9 +19,9 @@
 'use strict';
 
 const fs = require('fs');
-const smrf = require('smrf-native');
 const message = require('../../javascript/test/message.helper.js');
 const options = require('./options.js');
+const smrf = options.smrf;
 
 message.isCompressed = options.compressed;
 
