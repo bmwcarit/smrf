@@ -1,3 +1,6 @@
+# SMRF 0.3.0
+[JS] Add smrf javascript implementation without native modules
+
 # SMRF 0.2.3
 [Java] explicitly free resources when performing zlib (de-)compression
 
