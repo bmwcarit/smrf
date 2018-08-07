@@ -23,6 +23,10 @@ done
 
 export CI=true
 
-cd /data/src/node
+cd /data/src/javascript/smrf-native
+npm install $ADDITIONAL_NPM_ARGS
+npm test
+
+cd /data/src/javascript/smrf-javascript
 npm install $ADDITIONAL_NPM_ARGS
 npm test

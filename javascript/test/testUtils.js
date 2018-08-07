@@ -1,7 +1,7 @@
 /*
  * #%L
  * %%
- * Copyright (C) 2017 BMW Car IT GmbH
+ * Copyright (C) 2018 BMW Car IT GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,17 +18,10 @@
  */
 'use strict';
 
-const fs = require('fs');
-const message = require('../../javascript/test/message.helper.js');
-const options = require('./options.js');
-const smrf = options.smrf;
+const path = require('path');
+const smrf = require(path.join(process.env.PWD, '../..'));
+const testUtils = {
+    getSmrf: () => smrf
+};
 
-message.isCompressed = options.compressed;
-
-try {
-    const serializedMessage = smrf.serialize(message);
-    fs.writeFileSync(options.path, serializedMessage, 'binary');
-} catch (e) {
-    console.error('error occured: ' + e);
-    process.exit(1);
-}
+module.exports = testUtils;

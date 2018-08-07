@@ -1,3 +1,7 @@
+# SMRF 0.3.0
+[JS] Add smrf javascript implementation without native modules
+[JS] smrf-native: Fixed usage of deprecated v8 API in node 10 by using Nan replacement
+
 # SMRF 0.2.3
 [Java] explicitly free resources when performing zlib (de-)compression
 

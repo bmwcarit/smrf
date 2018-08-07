@@ -1,0 +1,29 @@
+{
+  "name": "smrf",
+  "version": "0.3.0",
+  "description": "javascript implementation of smrf",
+  "main": "main.js",
+  "scripts": {
+    "test": "cd node_modules/smrf-test && npm test",
+    "benchmark": "cd node_modules/smrf-test && npm run benchmark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bmwcarit/smrf.git"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/bmwcarit/smrf/issues"
+  },
+  "homepage": "https://github.com/bmwcarit/smrf/node/#readme",
+  "dependencies": {
+    "flatbuffers": "1.9.0"
+  },
+  "devDependencies": {
+    "smrf-test": "file:../test",
+    "eslint": "4.19.1",
+    "eslint-plugin-promise": "3.7.0",
+    "gulp": "3.9.1",
+    "gulp-clang-format": "1.0.23"
+  }
+}

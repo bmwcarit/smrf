@@ -61,13 +61,18 @@ void convertFromV8(const v8::Local<v8::Value>& v8Value, bool& value)
 
 void convertFromV8(const v8::Local<v8::Value>& v8Value, std::string& value)
 {
-    v8::String::Utf8Value stringValue(v8Value->ToString());
+    Nan::Utf8String stringValue(v8Value->ToString());
     value = std::string(*stringValue, stringValue.length());
 }
 
 template <typename T>
 std::enable_if_t<std::is_arithmetic<T>::value> convertFromV8(const v8::Local<v8::Value>& v8Value, T& value)
 {
+    if (!v8Value->IsNumber()){
+        std::string valueStr;
+        convertFromV8(v8Value, valueStr);
+        throw std::invalid_argument(std::string("value is not a number: " + valueStr));
+    }
     value = v8Value->NumberValue();
 }
 
