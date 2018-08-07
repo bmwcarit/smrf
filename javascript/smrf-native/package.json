@@ -5,7 +5,7 @@
   "main": "main.js",
   "gypfile": true,
   "scripts": {
-    "preinstall": "npm install node-gyp@3.6.2",
+    "preinstall": "npm install node-gyp@3.6.2 --no-save",
     "install": "node-gyp rebuild",
     "test": "ava -s 'test/*.test.js'",
     "format": "gulp --gulpfile ../common/gulpfile format",
