@@ -19,7 +19,7 @@
 'use strict';
 
 import test from 'ava';
-const smrf = require('..');
+const smrf = require('./testUtils').getSmrf();
 
 const expectedErrorMessage = 'argument must be a buffer';
 
@@ -31,14 +31,13 @@ test('throws with no arguments', t => {
 });
 
 test('throws with malformed input data', t => {
-    const malformedInput = Buffer.from([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
+    const malformedInput = Buffer.from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
     const error = t.throws(() => {
         smrf.deserialize(malformedInput);
     }, Error);
 });
 
-function runWrongArgumentTest(arg)
-{
+function runWrongArgumentTest(arg) {
     test('throws with wrong argument type: ' + typeof arg, t => {
         const error = t.throws(() => {
             smrf.deserialize(arg);
@@ -46,5 +45,5 @@ function runWrongArgumentTest(arg)
         t.is(error.message, expectedErrorMessage);
     });
 }
-const wrongArguments = [ true, 1, 'string', {key : 'value'} ];
+const wrongArguments = [true, 1, 'string', { key: 'value' }];
 wrongArguments.forEach(arg => runWrongArgumentTest(arg));

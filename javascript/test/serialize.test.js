@@ -20,7 +20,7 @@
 
 import test from 'ava';
 const clone = require('clone');
-const smrf = require('..');
+const smrf = require('./testUtils').getSmrf();
 const message = require('./message.helper.js');
 
 const errorMessageWrongArgumentCount = 'invalid number of arguments';
@@ -38,8 +38,7 @@ test('returns buffer', t => {
 });
 
 test('add custom signature to the message', t => {
-    function signingCallback(messageBuffer)
-    {
+    function signingCallback(messageBuffer) {
         t.pass(1);
         const customSignature = Buffer.from('This is a test signature!');
         return customSignature;
@@ -49,8 +48,7 @@ test('add custom signature to the message', t => {
     const serializedMessage = smrf.serialize(message);
 });
 
-function runMissingPropertyTest(messageWithMissingProperty, missingProperty)
-{
+function runMissingPropertyTest(messageWithMissingProperty, missingProperty) {
     test('message with missing property "' + missingProperty + '" throws', t => {
         const error = t.throws(() => {
             smrf.serialize(messageWithMissingProperty);
@@ -66,3 +64,11 @@ for (var key in message) {
         runMissingPropertyTest(messageWithMissingProperty, key);
     }
 }
+
+test('message with ttl as string throws', t => {
+    let corruptedMessage = clone(message);
+    corruptedMessage.ttlMs = 'blubber';
+    t.throws(() => {
+        smrf.serialize(corruptedMessage);
+    }, TypeError);
+});

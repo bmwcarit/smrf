@@ -20,7 +20,7 @@
 
 import test from 'ava';
 const clone = require('clone');
-const smrf = require('..');
+const smrf = require('./testUtils').getSmrf();
 const message = require('./message.helper.js');
 const roundtripCompare = require('./roundtrip.helper.js');
 const customSignature = Buffer.from('This is a test signature!');
@@ -49,9 +49,7 @@ function runRoundtripTest(expectedMessage, t, isCustomSigned) {
     if (isCustomSigned) {
         checkCustomSignature(deserializedMessage, t);
     }
-    t.is(serializedBuffer, deserializedMessage.serializedMessage);
     roundtripCompare(expectedMessage, deserializedMessage, t);
-
 }
 
 test('not compressed', t => {

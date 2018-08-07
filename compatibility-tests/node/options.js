@@ -18,9 +18,12 @@
  */
 'use strict';
 
+const smrf = process.env.npm_package_config_smrf === 'native' ? require('smrf-native') : require('smrf');
+
 const options = {
-    path : process.env.npm_package_config_path,
-    compressed : process.env.npm_package_config_compressed == 'compressed'
+    path: process.env.npm_package_config_path,
+    compressed: process.env.npm_package_config_compressed == 'compressed',
+    smrf
 };
 
 module.exports = options;
