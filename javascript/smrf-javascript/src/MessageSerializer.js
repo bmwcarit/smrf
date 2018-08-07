@@ -73,9 +73,9 @@ const MessageSerializer = {
             smrf.Message.addIsCompressed(builder, true);
         }
         if (message.signingCallback) {
-            smrf.Message.addIsSigned(builder, false);
             smrf.Message.addIsCustomSigned(builder, true);
         }
+        smrf.Message.addIsSigned(builder, false);
 
         const messageOffset = smrf.Message.endMessage(builder);
         builder.finish(messageOffset);
