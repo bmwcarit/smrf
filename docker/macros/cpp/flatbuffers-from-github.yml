@@ -2,13 +2,13 @@ flatbuffers-from-github:
  requires:
   - cpp-build-essentials
  build: |
-    RUN export FLATBUFFERS_VERSION=v1.6.0 \
+    RUN export FLATBUFFERS_VERSION=v1.9.0 \
         && cd /tmp \
         && git clone https://github.com/google/flatbuffers.git \
         && cd flatbuffers \
         && git checkout $FLATBUFFERS_VERSION \
-        && mkdir build \
-        && cd build \
-        && cmake .. -DFLATBUFFERS_BUILD_TESTS=OFF \
+        && mkdir buildDir \
+        && cd buildDir \
+        && cmake .. -DFLATBUFFERS_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=RELEASE \
         && make install -j"$(nproc)" \
         && rm -rf /tmp/flatbuffers

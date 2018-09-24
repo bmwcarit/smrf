@@ -48,7 +48,6 @@ smrf-cpp:
   - smrf-base
   - clang-from-llvm
   - gtest-gmock-from-github
-  - cpp-build-essentials
   - flatbuffers-from-github
  build: |
     RUN install-packages openssl-devel \
@@ -92,6 +91,7 @@ smrf-node:
 smrf-java:
  requires:
   - smrf-base
+  - flatbuffers-from-github
  build: |
     RUN install-packages maven
 

@@ -1,8 +1,8 @@
 libfuzzer-from-source:
  build: |
-    RUN export LIBFUZZER_TMP=/tmp/Fuzzer \
+    RUN export LIBFUZZER_TMP=/tmp/fuzzer \
         && cd /tmp \
-        && git clone --depth 1 https://chromium.googlesource.com/chromium/llvm-project/llvm/lib/Fuzzer \
+        && git clone --depth 1 https://chromium.googlesource.com/chromium/llvm-project/compiler-rt/lib/fuzzer \
         && $LIBFUZZER_TMP/build.sh \
         && mv libFuzzer.a /usr/local/lib \
         && rm -rf $LIBFUZZER_TMP
