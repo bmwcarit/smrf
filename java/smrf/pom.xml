@@ -24,7 +24,7 @@
 	<parent>
 		<groupId>io.joynr.smrf</groupId>
 		<artifactId>java</artifactId>
-		<version>0.3.0</version>
+		<version>0.3.1</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>io.joynr.smrf.java</groupId>
@@ -34,7 +34,7 @@
 		<fbs.compiler.artifactType>tar.gz</fbs.compiler.artifactType>
 		<fbs.compiler.distribution>distribution-linux</fbs.compiler.distribution>
 		<fbs.sources>${basedir}/schema</fbs.sources>
-		<flatbuffer.version>1.6.0.3</flatbuffer.version>
+		<flatbuffer.version>1.9.0</flatbuffer.version>
 	</properties>
 
 	<profiles>
@@ -76,7 +76,7 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.github.davidmoten</groupId>
+			<groupId>com.google.flatbuffers</groupId>
 			<artifactId>flatbuffers-java</artifactId>
 			<version>${flatbuffer.version}</version>
 		</dependency>
@@ -109,36 +109,9 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.10</version>
-				<executions>
-					<execution>
-						<id>unpack</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>com.github.davidmoten</groupId>
-									<artifactId>flatbuffers-compiler</artifactId>
-									<version>${flatbuffer.version}</version>
-									<type>${fbs.compiler.artifactType}</type>
-									<classifier>${fbs.compiler.distribution}</classifier>
-									<overWrite>true</overWrite>
-									<outputDirectory>${project.build.directory}</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.4.0</version>
+				<version>1.6.0</version>
 				<executions>
 					<execution>
 						<goals>
@@ -148,7 +121,8 @@
 					</execution>
 				</executions>
 				<configuration>
-					<executable>${project.build.directory}/bin/flatc</executable>
+					<!-- IMPORTANT: make sure flatc is available on the system -->
+					<executable>flatc</executable>
 					<arguments>
 						<argument>--java</argument>
 						<argument>--gen-mutable</argument>
@@ -192,7 +166,7 @@
 									<pluginExecutionFilter>
 										<groupId>org.codehaus.mojo</groupId>
 										<artifactId>exec-maven-plugin</artifactId>
-										<versionRange>[1.4.0,)</versionRange>
+										<versionRange>[1.6.0,)</versionRange>
 										<goals>
 											<goal>exec</goal>
 										</goals>

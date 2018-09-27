@@ -15,10 +15,9 @@ specific language governing permissions and limitations
 under the License.
 
 This project has dependencies to:
-
-com.github.davidmoten:flatbuffers-java under Apache License, Version 2.0
-JUnit under Common Public License Version 1.0
-Hamcrest Core under New BSD License
-Hamcrest library under New BSD License
-JUnitParams under Apache License, Version 2.0
-Guava: Google Core Libraries for Java under The Apache Software License, Version 2.0
+  FlatBuffers Java API under Apache License V2.0
+  Guava: Google Core Libraries for Java under The Apache Software License, Version 2.0
+  Hamcrest Core under New BSD License
+  Hamcrest library under New BSD License
+  JUnit under Eclipse Public License 1.0
+  JUnitParams under Apache 2
