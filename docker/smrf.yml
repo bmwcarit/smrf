@@ -23,10 +23,10 @@ smrf-base:
     # install necessary packages
     ###################################################
     RUN install-packages \
-           wget \
-           tar \
-           xz \
-           git
+        wget \
+        tar \
+        xz \
+        git
 
     ###################################################
     # install tini
@@ -39,8 +39,9 @@ smrf-base:
     # login as user "smrf"
     ###################################################
     ENV GOSU_VERSION=1.10
-    RUN curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-amd64" \
-    && chmod 755 /usr/local/bin/gosu
+    RUN curl -o /usr/local/bin/gosu -sSL \
+        "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-amd64" \
+        && chmod 755 /usr/local/bin/gosu
     ENTRYPOINT ["/tini", "-g", "--", "/data/scripts/boot2user.sh"]
 
 smrf-cpp:
@@ -74,15 +75,17 @@ smrf-node:
     ENV NODE_VERSION 8.11.3
 
     # install nvm
-    RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.2/install.sh | bash
+    RUN curl --silent -o- \
+        https://raw.githubusercontent.com/creationix/nvm/v0.31.2/install.sh | bash
 
     # install node and npm
-    # having the nvm directory writable makes it possible to use nvm to change node versions manually
+    # having the nvm directory writable makes it possible to use nvm to change node
+    # versions manually
     RUN source $NVM_DIR/nvm.sh \
-    && nvm install $NODE_VERSION \
-    && nvm alias default $NODE_VERSION \
-    && nvm use default \
-    && chmod -R a+rwx $NVM_DIR
+        && nvm install $NODE_VERSION \
+        && nvm alias default $NODE_VERSION \
+        && nvm use default \
+        && chmod -R a+rwx $NVM_DIR
 
     # add node and npm to path
     ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules

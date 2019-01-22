@@ -16,7 +16,7 @@ boost-devel:
 
 cpp-build-essentials:
  requires:
- - gcc
- - cmake
- - zlib-devel
- - boost-devel
+  - gcc
+  - cmake
+  - zlib-devel
+  - boost-devel
