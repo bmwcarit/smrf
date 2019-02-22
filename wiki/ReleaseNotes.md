@@ -1,3 +1,6 @@
+# SMRF 0.3.2
+* [C++, Java, JS] Update flatbuffers to 1.10.0.
+
 # SMRF 0.3.1
 * [C++, Java, JS] Update flatbuffers to 1.9.0.
 
