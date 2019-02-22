@@ -34,7 +34,7 @@
 		<fbs.compiler.artifactType>tar.gz</fbs.compiler.artifactType>
 		<fbs.compiler.distribution>distribution-linux</fbs.compiler.distribution>
 		<fbs.sources>${basedir}/schema</fbs.sources>
-		<flatbuffer.version>1.9.0</flatbuffer.version>
+		<flatbuffer.version>1.10.0</flatbuffer.version>
 	</properties>
 
 	<profiles>

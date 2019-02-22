@@ -80,7 +80,7 @@ include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 
 include(AddClangFormat)
 
-find_package(FlatBuffers 1.9.0 REQUIRED)
+find_package(FlatBuffers 1.10.0 REQUIRED)
 
 set(FLATBUFFERS_SCHEMA_FILES
     ${CMAKE_CURRENT_LIST_DIR}/../schema/smrf.fbs
