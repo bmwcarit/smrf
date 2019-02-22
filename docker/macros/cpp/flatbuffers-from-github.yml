@@ -2,7 +2,7 @@ flatbuffers-from-github:
  requires:
   - cpp-build-essentials
  build: |
-    RUN export FLATBUFFERS_VERSION=v1.9.0 \
+    RUN export FLATBUFFERS_VERSION=v1.10.0 \
         && cd /tmp \
         && git clone https://github.com/google/flatbuffers.git \
         && cd flatbuffers \
