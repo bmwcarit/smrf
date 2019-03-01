@@ -1,6 +1,6 @@
 {
   "name": "smrf-native",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "Node.js wrapper for libsmrf",
   "main": "main.js",
   "gypfile": true,
