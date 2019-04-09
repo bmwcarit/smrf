@@ -1,3 +1,6 @@
+# SMRF 0.3.3
+* [JS] Reverted smrf-native changes incompatible with older joynr versions
+
 # SMRF 0.3.2
 * [C++, Java, JS] Update flatbuffers to 1.10.0.
 
