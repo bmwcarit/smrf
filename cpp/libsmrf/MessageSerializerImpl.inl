@@ -142,9 +142,17 @@ public:
             }
         }
 
-        flatbuffers::Offset<Message> message =
-                CreateMessage(flatBuffersBuilder, recipient, sender, ttlMs, ttlAbsolute, isSigned, isEncrypted, isCompressed,
-                              headers, flatbuffersBody, isCustomSigned);
+        flatbuffers::Offset<Message> message = CreateMessage(flatBuffersBuilder,
+                                                             recipient,
+                                                             sender,
+                                                             ttlMs,
+                                                             ttlAbsolute,
+                                                             isSigned,
+                                                             isEncrypted,
+                                                             isCompressed,
+                                                             headers,
+                                                             flatbuffersBody,
+                                                             isCustomSigned);
 
         flatBuffersBuilder.Finish(message);
 

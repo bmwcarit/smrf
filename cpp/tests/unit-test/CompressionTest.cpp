@@ -35,9 +35,35 @@ TEST(CompressionTest, zlibCompressGeneratesExpectedOutput)
 
     // generated through `openssl zlib < input.txt | xxd -i`
     // clang-format off
-    const ByteVector expectedCompressedData = {0x78, 0x9c, 0xf3, 0x70, 0xf5, 0xf1, 0xf1, 0x57, 0x08, 0xf7,
-                                               0x0f, 0xf2, 0x71, 0xf1, 0x18, 0x65, 0x8e, 0x32, 0x47, 0x99,
-                                               0xa3, 0x4c, 0x72, 0x99, 0x00, 0xbe, 0xe8, 0x37, 0x00};
+    const ByteVector expectedCompressedData = {0x78,
+                                               0x9c,
+                                               0xf3,
+                                               0x70,
+                                               0xf5,
+                                               0xf1,
+                                               0xf1,
+                                               0x57,
+                                               0x08,
+                                               0xf7,
+                                               0x0f,
+                                               0xf2,
+                                               0x71,
+                                               0xf1,
+                                               0x18,
+                                               0x65,
+                                               0x8e,
+                                               0x32,
+                                               0x47,
+                                               0x99,
+                                               0xa3,
+                                               0x4c,
+                                               0x72,
+                                               0x99,
+                                               0x00,
+                                               0xbe,
+                                               0xe8,
+                                               0x37,
+                                               0x00};
     // clang-format on
 
     ByteVector compressedData = zlib::compress(repeatedData);

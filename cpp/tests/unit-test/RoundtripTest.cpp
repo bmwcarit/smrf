@@ -39,8 +39,31 @@ class RoundtripTest : public ::testing::Test
 public:
     RoundtripTest()
     {
-        customSignature = {'T', 'h', 'i', 's', ' ', 'i', 's', ' ', 'a', ' ', 't', 'e', 's',
-                           't', ' ', 's', 'i', 'g', 'n', 'a', 't', 'u', 'r', 'e', '!'};
+        customSignature = {'T',
+                           'h',
+                           'i',
+                           's',
+                           ' ',
+                           'i',
+                           's',
+                           ' ',
+                           'a',
+                           ' ',
+                           't',
+                           'e',
+                           's',
+                           't',
+                           ' ',
+                           's',
+                           'i',
+                           'g',
+                           'n',
+                           'a',
+                           't',
+                           'u',
+                           'r',
+                           'e',
+                           '!'};
     }
 
 protected:
