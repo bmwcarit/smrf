@@ -7,7 +7,68 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
+        -pipe \
+        -Wunused-value \
+        -Wunused \
+        -Wpointer-arith \
+        -Wformat-y2k \
+        -Wno-format-extra-args \
+        -Wformat-nonliteral \
+        -Winit-self \
+        -Winvalid-pch \
+        -Wunsafe-loop-optimizations \
+        -Wstack-protector \
+        -Wswitch-enum \
+        -Wfatal-errors \
+        -D_GLIBCXX_ASSERTIONS \
+        -fstack-protector-strong \
+        -Wall \
+        -Wextra \
+        -fwrapv \
+        -Wformat=2 \
+        -Wformat-signedness \
+        -Wmissing-include-dirs \
+        -Wmissing-braces \
+        -Wpacked \
+        -Wimplicit-fallthrough=5 \
+        -Wunused-parameter \
+        -Wuninitialized \
+        -Walloca \
+        -Wduplicated-branches \
+        -Wduplicated-cond \
+        -Wfloat-equal \
+        -Wshadow \
+        -Wcast-qual \
+        -Wsign-conversion \
+        -Wlogical-op \
+        -Wformat-security \
+        -Walloc-zero \
+        -Wcast-align \
+        -Wredundant-decls \
+        -Werror=all \
+        -Werror=extra \
+        -Werror=format \
+        -Werror=format-signedness \
+        -Werror=missing-include-dirs \
+        -Werror=implicit-fallthrough \
+        -Werror=unused-parameter \
+        -Werror=uninitialized \
+        -Werror=alloca \
+        -Werror=duplicated-branches \
+        -Werror=duplicated-cond \
+        -Werror=float-equal \
+        -Werror=cast-qual \
+        -Werror=sign-conversion \
+        -Werror=logical-op \
+        -Werror=format-security \
+        -Werror=alloc-zero \
+        -Werror=cast-align \
+        -Werror=redundant-decls \
+        -Wpedantic \
+    ")
 
 if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "setting default value 'Debug' for CMAKE_BUILD_TYPE")
