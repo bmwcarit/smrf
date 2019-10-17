@@ -24,7 +24,7 @@
 namespace smrf
 {
 
-MessageSerializer::MessageSerializer() : pImpl(std::make_unique<MessageSerializerImpl>())
+MessageSerializer::MessageSerializer() : _pImpl(std::make_unique<MessageSerializerImpl>())
 {
 }
 
@@ -32,66 +32,66 @@ MessageSerializer::~MessageSerializer() = default;
 
 MessageSerializer& MessageSerializer::setSender(const std::string& sender)
 {
-    pImpl->setSender(sender);
+    _pImpl->setSender(sender);
     return *this;
 }
 
 MessageSerializer& MessageSerializer::setRecipient(const std::string& recipient)
 {
-    pImpl->setRecipient(recipient);
+    _pImpl->setRecipient(recipient);
     return *this;
 }
 
 MessageSerializer& MessageSerializer::setTtlMs(std::int64_t ttlMs)
 {
-    pImpl->setTtlMs(ttlMs);
+    _pImpl->setTtlMs(ttlMs);
     return *this;
 }
 
 MessageSerializer& MessageSerializer::setTtlAbsolute(bool ttlAbsolute)
 {
-    pImpl->setTtlAbsolute(ttlAbsolute);
+    _pImpl->setTtlAbsolute(ttlAbsolute);
     return *this;
 }
 
 MessageSerializer& MessageSerializer::setCompressed(bool isCompressed)
 {
-    pImpl->setCompressed(isCompressed);
+    _pImpl->setCompressed(isCompressed);
     return *this;
 }
 
 MessageSerializer& MessageSerializer::setHeaders(const std::unordered_map<std::string, std::string>& headerMap)
 {
-    pImpl->setHeaders(headerMap);
+    _pImpl->setHeaders(headerMap);
     return *this;
 }
 
 MessageSerializer& MessageSerializer::setBody(const ByteArrayView& body)
 {
-    pImpl->setBody(body);
+    _pImpl->setBody(body);
     return *this;
 }
 
 MessageSerializer& MessageSerializer::signWith(std::shared_ptr<const Certificate> cert, std::shared_ptr<const PrivateKey> key)
 {
-    pImpl->signWith(std::move(cert), std::move(key));
+    _pImpl->signWith(std::move(cert), std::move(key));
     return *this;
 }
 
 MessageSerializer& MessageSerializer::encryptFor(std::shared_ptr<const Certificate> cert)
 {
-    pImpl->encryptFor(std::move(cert));
+    _pImpl->encryptFor(std::move(cert));
     return *this;
 }
 
 ByteVector MessageSerializer::serialize()
 {
-    return pImpl->serialize();
+    return _pImpl->serialize();
 }
 
 void MessageSerializer::setCustomSigningCallback(std::function<ByteVector(const ByteArrayView&)> signingCallback)
 {
-    pImpl->setCustomSigningCallback(std::move(signingCallback));
+    _pImpl->setCustomSigningCallback(std::move(signingCallback));
 }
 
 } // namespace smrf

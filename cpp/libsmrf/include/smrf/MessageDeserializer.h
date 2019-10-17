@@ -209,7 +209,7 @@ public:
     ByteArrayView getSignature() const;
 
 private:
-    std::unique_ptr<MessageDeserializerImpl> pImpl;
+    std::unique_ptr<MessageDeserializerImpl> _pImpl;
 };
 
 } // namespace smrf

@@ -191,7 +191,7 @@ public:
     void setCustomSigningCallback(std::function<ByteVector(const ByteArrayView&)> signingCallback);
 
 private:
-    std::unique_ptr<MessageSerializerImpl> pImpl;
+    std::unique_ptr<MessageSerializerImpl> _pImpl;
 };
 
 } // namespace smrf

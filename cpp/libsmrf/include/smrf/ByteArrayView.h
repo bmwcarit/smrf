@@ -33,15 +33,15 @@ namespace smrf
 class ByteArrayView
 {
 public:
-    ByteArrayView() : arrayData(nullptr), arraySize(0)
+    ByteArrayView() : _arrayData(nullptr), _arraySize(0)
     {
     }
 
-    explicit ByteArrayView(const Byte* arrayData, std::size_t arraySize) : arrayData(arrayData), arraySize(arraySize)
+    explicit ByteArrayView(const Byte* arrayData, std::size_t arraySize) : _arrayData(arrayData), _arraySize(arraySize)
     {
     }
 
-    explicit ByteArrayView(const ByteVector& byteVector) : arrayData(byteVector.data()), arraySize(byteVector.size())
+    explicit ByteArrayView(const ByteVector& byteVector) : _arrayData(byteVector.data()), _arraySize(byteVector.size())
     {
     }
 
@@ -50,17 +50,17 @@ public:
 
     const Byte* data() const
     {
-        return arrayData;
+        return _arrayData;
     }
 
     std::size_t size() const
     {
-        return arraySize;
+        return _arraySize;
     }
 
 private:
-    const Byte* arrayData;
-    std::size_t arraySize;
+    const Byte* _arrayData;
+    std::size_t _arraySize;
 };
 } // namespace smrf
 

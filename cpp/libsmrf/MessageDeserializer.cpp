@@ -25,12 +25,12 @@ namespace smrf
 {
 
 MessageDeserializer::MessageDeserializer(const ByteArrayView& serializedMessage, bool verifyInput)
-        : pImpl(std::make_unique<MessageDeserializerImpl>(serializedMessage, verifyInput))
+        : _pImpl(std::make_unique<MessageDeserializerImpl>(serializedMessage, verifyInput))
 {
 }
 
 MessageDeserializer::MessageDeserializer(ByteArrayView&& serializedMessage, bool verifyInput)
-        : pImpl(std::make_unique<MessageDeserializerImpl>(std::move(serializedMessage), verifyInput))
+        : _pImpl(std::make_unique<MessageDeserializerImpl>(std::move(serializedMessage), verifyInput))
 {
 }
 
@@ -38,82 +38,82 @@ MessageDeserializer::~MessageDeserializer() = default;
 
 bool MessageDeserializer::isEncrypted() const
 {
-    return pImpl->isEncrypted();
+    return _pImpl->isEncrypted();
 }
 
 std::uint64_t MessageDeserializer::getMessageSize() const
 {
-    return pImpl->getMessageSize();
+    return _pImpl->getMessageSize();
 }
 
 bool MessageDeserializer::isSigned() const
 {
-    return pImpl->isSigned();
+    return _pImpl->isSigned();
 }
 
 bool MessageDeserializer::isCompressed() const
 {
-    return pImpl->isCompressed();
+    return _pImpl->isCompressed();
 }
 
 bool MessageDeserializer::isCustomSigned() const
 {
-    return pImpl->isCustomSigned();
+    return _pImpl->isCustomSigned();
 }
 
 std::string MessageDeserializer::getSender() const
 {
-    return pImpl->getSender();
+    return _pImpl->getSender();
 }
 
 ByteArrayView MessageDeserializer::getRawSender() const
 {
-    return pImpl->getRawSender();
+    return _pImpl->getRawSender();
 }
 
 std::string MessageDeserializer::getRecipient() const
 {
-    return pImpl->getRecipient();
+    return _pImpl->getRecipient();
 }
 
 ByteArrayView MessageDeserializer::getRawRecipient() const
 {
-    return pImpl->getRawRecipient();
+    return _pImpl->getRawRecipient();
 }
 
 std::int64_t MessageDeserializer::getTtlMs() const
 {
-    return pImpl->getTtlMs();
+    return _pImpl->getTtlMs();
 }
 
 bool MessageDeserializer::isTtlAbsolute() const
 {
-    return pImpl->isTtlAbsolute();
+    return _pImpl->isTtlAbsolute();
 }
 
 std::unordered_map<std::string, std::string> MessageDeserializer::getHeaders() const
 {
-    return pImpl->getHeaders();
+    return _pImpl->getHeaders();
 }
 
 std::vector<std::pair<ByteArrayView, ByteArrayView>> MessageDeserializer::getRawHeaders() const
 {
-    return pImpl->getRawHeaders();
+    return _pImpl->getRawHeaders();
 }
 
 const ByteArrayView MessageDeserializer::getBody() const
 {
-    return pImpl->getBody();
+    return _pImpl->getBody();
 }
 
 ByteVector MessageDeserializer::decompressBody() const
 {
-    return pImpl->decompressBody();
+    return _pImpl->decompressBody();
 }
 
 ByteArrayView MessageDeserializer::getSignature() const
 {
-    return pImpl->getSignature();
+    return _pImpl->getSignature();
 }
 
 } // namespace smrf

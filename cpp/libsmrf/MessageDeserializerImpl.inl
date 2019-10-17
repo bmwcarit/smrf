@@ -42,76 +42,76 @@ class MessageDeserializerImpl
 {
 public:
     explicit MessageDeserializerImpl(const ByteArrayView& serializedMessage, bool verifyInput)
-            : serializedMessage(serializedMessage), messagePrefix(this->serializedMessage), message(nullptr)
+            : _serializedMessage(serializedMessage), _messagePrefix(this->_serializedMessage), _message(nullptr)
     {
         init(verifyInput);
     }
 
     explicit MessageDeserializerImpl(ByteArrayView&& serializedMessage, bool verifyInput)
-            : serializedMessage(std::move(serializedMessage)), messagePrefix(this->serializedMessage), message(nullptr)
+            : _serializedMessage(std::move(serializedMessage)), _messagePrefix(this->_serializedMessage), _message(nullptr)
     {
         init(verifyInput);
     }
 
     bool isEncrypted() const
     {
-        return message->isEncrypted();
+        return _message->isEncrypted();
     }
 
     std::uint64_t getMessageSize() const
     {
-        return MessagePrefix::SIZE + messagePrefix.msgSize + messagePrefix.sigSize;
+        return MessagePrefix::SIZE + _messagePrefix.msgSize + _messagePrefix.sigSize;
     }
 
     bool isSigned() const
     {
-        return message->isSigned();
+        return _message->isSigned();
     }
 
     bool isCompressed() const
     {
-        return message->isCompressed();
+        return _message->isCompressed();
     }
 
     bool isCustomSigned() const
     {
-        return message->isCustomSigned();
+        return _message->isCustomSigned();
     }
 
     std::string getSender() const
     {
-        return getString(message->sender());
+        return getString(_message->sender());
     }
 
     ByteArrayView getRawSender() const
     {
-        return getRawString(message->sender());
+        return getRawString(_message->sender());
     }
 
     std::string getRecipient() const
     {
-        return getString(message->recipient());
+        return getString(_message->recipient());
     }
 
     ByteArrayView getRawRecipient() const
     {
-        return getRawString(message->recipient());
+        return getRawString(_message->recipient());
     }
 
     std::int64_t getTtlMs() const
     {
-        return message->ttlMs();
+        return _message->ttlMs();
     }
 
     bool isTtlAbsolute() const
     {
-        return message->ttlAbsolute();
+        return _message->ttlAbsolute();
     }
 
     std::unordered_map<std::string, std::string> getHeaders() const
     {
         std::unordered_map<std::string, std::string> headers;
-        const flatbuffers::Vector<flatbuffers::Offset<Header>>* flatbuffersHeaders = message->headers();
+        const flatbuffers::Vector<flatbuffers::Offset<Header>>* flatbuffersHeaders = _message->headers();
         if (flatbuffersHeaders != nullptr) {
             headers.reserve(flatbuffersHeaders->size());
             for (const Header* entry : *flatbuffersHeaders) {
@@ -129,7 +129,7 @@ public:
     std::vector<std::pair<ByteArrayView, ByteArrayView>> getRawHeaders() const
     {
         std::vector<std::pair<ByteArrayView, ByteArrayView>> rawHeaders;
-        const flatbuffers::Vector<flatbuffers::Offset<Header>>* flatbuffersHeaders = message->headers();
+        const flatbuffers::Vector<flatbuffers::Offset<Header>>* flatbuffersHeaders = _message->headers();
         if (flatbuffersHeaders != nullptr) {
             rawHeaders.reserve(flatbuffersHeaders->size());
             for (const Header* entry : *flatbuffersHeaders) {
@@ -147,8 +147,8 @@ public:
 
     const ByteArrayView getBody() const
     {
-        if (message->body()) {
-            return ByteArrayView(message->body()->Data(), message->body()->size());
+        if (_message->body()) {
+            return ByteArrayView(_message->body()->Data(), _message->body()->size());
         }
         return ByteArrayView();
     }
@@ -161,18 +161,18 @@ public:
         if (!isCompressed()) {
             throw EncodingException("message is not compressed");
         }
-        if (message->body()) {
-            return zlib::decompress(ByteArrayView(message->body()->Data(), message->body()->size()));
+        if (_message->body()) {
+            return zlib::decompress(ByteArrayView(_message->body()->Data(), _message->body()->size()));
         }
         return ByteVector();
     }
 
     ByteArrayView getSignature() const
     {
-        if (message->isCustomSigned() || message->isSigned()) {
-            const size_t signatureOffset = MessagePrefix::SIZE + messagePrefix.msgSize;
-            const Byte* beginningOfSignature = serializedMessage.data() + signatureOffset;
-            return ByteArrayView(beginningOfSignature, messagePrefix.sigSize);
+        if (_message->isCustomSigned() || _message->isSigned()) {
+            const size_t signatureOffset = MessagePrefix::SIZE + _messagePrefix.msgSize;
+            const Byte* beginningOfSignature = _serializedMessage.data() + signatureOffset;
+            return ByteArrayView(beginningOfSignature, _messagePrefix.sigSize);
         } else {
             throw EncodingException("message has no signature");
         }
@@ -200,30 +200,30 @@ private:
 
     void init(bool verifyInput)
     {
-        const std::uint8_t* msgStart = serializedMessage.data() + MessagePrefix::SIZE;
+        const std::uint8_t* msgStart = _serializedMessage.data() + MessagePrefix::SIZE;
 
         if (verifyInput) {
-            if (messagePrefix.version != MessagePrefix::VERSION) {
+            if (_messagePrefix.version != MessagePrefix::VERSION) {
                 throw EncodingException("wrong version");
             }
 
-            const std::uint64_t expectedMessageSize = MessagePrefix::SIZE + messagePrefix.msgSize + messagePrefix.sigSize;
-            if (serializedMessage.size() < expectedMessageSize) {
+            const std::uint64_t expectedMessageSize = MessagePrefix::SIZE + _messagePrefix.msgSize + _messagePrefix.sigSize;
+            if (_serializedMessage.size() < expectedMessageSize) {
                 throw EncodingException("wrong size");
             }
 
-            flatbuffers::Verifier verifier(msgStart, messagePrefix.msgSize);
+            flatbuffers::Verifier verifier(msgStart, _messagePrefix.msgSize);
             const bool verified = VerifyMessageBuffer(verifier);
             if (!verified) {
                 throw EncodingException("wrong encoding");
             }
         }
 
-        message = GetMessage(msgStart);
+        _message = GetMessage(msgStart);
     }
 
-    const ByteArrayView serializedMessage;
-    const MessagePrefix messagePrefix;
-    const Message* message;
+    const ByteArrayView _serializedMessage;
+    const MessagePrefix _messagePrefix;
+    const Message* _message;
 };
 } // namespace smrf

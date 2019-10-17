@@ -36,62 +36,62 @@ class RoundtripMessage
 public:
     RoundtripMessage(bool shouldBeCompressed)
     {
-        sender = "sender";
-        recipient = "recipient";
-        ttlMs = 1234567;
-        ttlAbsolute = false;
+        _sender = "sender";
+        _recipient = "recipient";
+        _ttlMs = 1234567;
+        _ttlAbsolute = false;
         const std::size_t bodySize = 100;
-        body.resize(bodySize);
+        _body.resize(bodySize);
         for (std::size_t i = 0; i < 100; ++i) {
-            body[i] = i;
+            _body[i] = i;
         }
 
-        headers["key1"] = "value1";
-        headers["key2"] = "value2";
+        _headers["key1"] = "value1";
+        _headers["key2"] = "value2";
 
-        isCompressed = shouldBeCompressed;
+        _isCompressed = shouldBeCompressed;
     }
 
     void init(smrf::MessageSerializer& serializer)
     {
-        serializer.setSender(sender);
-        serializer.setRecipient(recipient);
-        serializer.setHeaders(headers);
-        serializer.setTtlMs(ttlMs);
-        serializer.setTtlAbsolute(ttlAbsolute);
-        serializer.setBody(smrf::ByteArrayView(body));
-        serializer.setCompressed(isCompressed);
+        serializer.setSender(_sender);
+        serializer.setRecipient(_recipient);
+        serializer.setHeaders(_headers);
+        serializer.setTtlMs(static_cast<std::int64_t>(_ttlMs));
+        serializer.setTtlAbsolute(_ttlAbsolute);
+        serializer.setBody(smrf::ByteArrayView(_body));
+        serializer.setCompressed(_isCompressed);
     }
 
     void check(const smrf::MessageDeserializer& deserializer)
     {
-        EXPECT_EQ(sender, deserializer.getSender());
-        EXPECT_EQ(recipient, deserializer.getRecipient());
-        EXPECT_EQ(headers, deserializer.getHeaders());
-        EXPECT_EQ(ttlMs, deserializer.getTtlMs());
-        EXPECT_EQ(ttlAbsolute, deserializer.isTtlAbsolute());
-        EXPECT_EQ(isCompressed, deserializer.isCompressed());
+        EXPECT_EQ(_sender, deserializer.getSender());
+        EXPECT_EQ(_recipient, deserializer.getRecipient());
+        EXPECT_EQ(_headers, deserializer.getHeaders());
+        EXPECT_EQ(_ttlMs, deserializer.getTtlMs());
+        EXPECT_EQ(_ttlAbsolute, deserializer.isTtlAbsolute());
+        EXPECT_EQ(_isCompressed, deserializer.isCompressed());
 
-        if (!isCompressed) {
+        if (!_isCompressed) {
             smrf::ByteArrayView deserializedBodyView = deserializer.getBody();
-            ASSERT_EQ(body.size(), deserializedBodyView.size());
+            ASSERT_EQ(_body.size(), deserializedBodyView.size());
             // element-wise comparison
-            for (std::size_t i = 0; i < body.size(); ++i) {
-                EXPECT_EQ(body[i], *(deserializedBodyView.data() + i));
+            for (std::size_t i = 0; i < _body.size(); ++i) {
+                EXPECT_EQ(_body[i], *(deserializedBodyView.data() + i));
             }
         } else {
-            EXPECT_EQ(body, deserializer.decompressBody());
+            EXPECT_EQ(_body, deserializer.decompressBody());
         }
     }
 
 private:
-    std::string sender;
-    std::string recipient;
-    std::uint64_t ttlMs;
-    bool ttlAbsolute;
-    smrf::ByteVector body;
-    bool isCompressed;
-    std::unordered_map<std::string, std::string> headers;
+    std::string _sender;
+    std::string _recipient;
+    std::uint64_t _ttlMs;
+    bool _ttlAbsolute;
+    smrf::ByteVector _body;
+    bool _isCompressed;
+    std::unordered_map<std::string, std::string> _headers;
 };
 
 #endif // ROUNDTRIPMESSAGE_H

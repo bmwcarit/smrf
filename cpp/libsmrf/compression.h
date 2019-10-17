@@ -40,18 +40,18 @@ class ByteInsertDevice
 public:
     using category = boost::iostreams::sink_tag;
     using char_type = char;
-    ByteInsertDevice(ByteVector& byteVector) : byteVector(byteVector)
+    ByteInsertDevice(ByteVector& byteVector) : _byteVector(byteVector)
     {
     }
     std::streamsize write(const char* s, std::streamsize n)
     {
         using T = ByteVector::value_type;
-        byteVector.insert(byteVector.end(), reinterpret_cast<const T*>(s), reinterpret_cast<const T*>(s) + n);
+        _byteVector.insert(_byteVector.end(), reinterpret_cast<const T*>(s), reinterpret_cast<const T*>(s) + n);
         return n;
     }
 
 protected:
-    ByteVector& byteVector;
+    ByteVector& _byteVector;
 };
 
 namespace zlib

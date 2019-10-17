@@ -41,40 +41,40 @@ class MessageSerializerImpl
 {
 public:
     MessageSerializerImpl()
-            : flatBuffersBuilder(),
-              sender(),
-              recipient(),
-              headers(),
-              body(),
-              signingCertificate(),
-              signingKey(),
-              encryptionCertificate()
+            : _flatBuffersBuilder(),
+              _sender(),
+              _recipient(),
+              _headers(),
+              _body(),
+              _signingCertificate(),
+              _signingKey(),
+              _encryptionCertificate()
     {
     }
 
     void setSender(const std::string& sender)
     {
-        this->sender = flatBuffersBuilder.CreateString(sender);
+        this->_sender = _flatBuffersBuilder.CreateString(sender);
     }
 
     void setRecipient(const std::string& recipient)
     {
-        this->recipient = flatBuffersBuilder.CreateString(recipient);
+        this->_recipient = _flatBuffersBuilder.CreateString(recipient);
     }
 
     void setTtlMs(std::int64_t ttlMs)
     {
-        this->ttlMs = ttlMs;
+        this->_ttlMs = ttlMs;
     }
 
     void setTtlAbsolute(bool ttlAbsolute)
     {
-        this->ttlAbsolute = ttlAbsolute;
+        this->_ttlAbsolute = ttlAbsolute;
     }
 
     void setCompressed(bool isCompressed)
     {
-        this->isCompressed = isCompressed;
+        this->_isCompressed = isCompressed;
     }
 
     void setHeaders(const std::unordered_map<std::string, std::string>& headerMap)
@@ -83,17 +83,17 @@ public:
         headerVec.reserve(headerMap.size());
 
         for (const auto& entry : headerMap) {
-            auto key = flatBuffersBuilder.CreateString(entry.first);
-            auto value = flatBuffersBuilder.CreateString(entry.second);
-            auto header = CreateHeader(flatBuffersBuilder, key, value);
+            auto key = _flatBuffersBuilder.CreateString(entry.first);
+            auto value = _flatBuffersBuilder.CreateString(entry.second);
+            auto header = CreateHeader(_flatBuffersBuilder, key, value);
             headerVec.push_back(std::move(header));
         }
-        this->headers = flatBuffersBuilder.CreateVectorOfSortedTables(&headerVec);
+        this->_headers = _flatBuffersBuilder.CreateVectorOfSortedTables(&headerVec);
     }
 
     void setBody(const ByteArrayView& body)
     {
-        this->body = body;
+        this->_body = body;
     }
 
     void signWith(std::shared_ptr<const Certificate> cert, std::shared_ptr<const PrivateKey> key)
@@ -101,66 +101,66 @@ public:
         assert(cert);
         assert(key);
 
-        this->signingCertificate = std::move(cert);
-        this->signingKey = std::move(key);
+        this->_signingCertificate = std::move(cert);
+        this->_signingKey = std::move(key);
     }
 
     void encryptFor(std::shared_ptr<const Certificate> cert)
     {
         assert(cert);
-        this->encryptionCertificate = std::move(cert);
+        this->_encryptionCertificate = std::move(cert);
     }
 
     void setCustomSigningCallback(std::function<ByteVector(const ByteArrayView&)> signingCallback)
     {
         assert(signingCallback);
-        isCustomSigned = true;
-        customSigningCallback = signingCallback;
+        _isCustomSigned = true;
+        _customSigningCallback = signingCallback;
     }
 
     ByteVector serialize()
     {
-        const bool isEncrypted(encryptionCertificate);
-        const bool isSigned(signingCertificate && signingKey);
+        const bool isEncrypted(_encryptionCertificate);
+        const bool isSigned(_signingCertificate && _signingKey);
         std::uint16_t sigSize = 0;
 
         flatbuffers::Offset<flatbuffers::Vector<ByteVector::value_type>> flatbuffersBody;
-        if (body.size() > 0) {
+        if (_body.size() > 0) {
             if (!isEncrypted) {
-                if (!isCompressed) {
-                    flatbuffersBody = flatBuffersBuilder.CreateVector(body.data(), body.size());
+                if (!_isCompressed) {
+                    flatbuffersBody = _flatBuffersBuilder.CreateVector(_body.data(), _body.size());
                 } else {
                     // compress plaintext body
-                    flatbuffersBody = flatBuffersBuilder.CreateVector(zlib::compress(body));
+                    flatbuffersBody = _flatBuffersBuilder.CreateVector(zlib::compress(_body));
                 }
             } else {
                 // encrypt using OpenSSL
-                if (isCompressed) {
+                if (_isCompressed) {
                     // generated CMS CompressedData
                 } else {
                 }
             }
         }
 
-        flatbuffers::Offset<Message> message = CreateMessage(flatBuffersBuilder,
-                                                             recipient,
-                                                             sender,
-                                                             ttlMs,
-                                                             ttlAbsolute,
+        flatbuffers::Offset<Message> message = CreateMessage(_flatBuffersBuilder,
+                                                             _recipient,
+                                                             _sender,
+                                                             _ttlMs,
+                                                             _ttlAbsolute,
                                                              isSigned,
                                                              isEncrypted,
-                                                             isCompressed,
-                                                             headers,
+                                                             _isCompressed,
+                                                             _headers,
                                                              flatbuffersBody,
-                                                             isCustomSigned);
+                                                             _isCustomSigned);
 
-        flatBuffersBuilder.Finish(message);
+        _flatBuffersBuilder.Finish(message);
 
-        const std::size_t flatbufferSize = flatBuffersBuilder.GetSize();
+        const std::size_t flatbufferSize = _flatBuffersBuilder.GetSize();
         ByteVector signature;
-        if (isCustomSigned) {
-            auto beginingBufPtr = flatBuffersBuilder.GetBufferPointer();
-            signature = customSigningCallback(ByteArrayView(beginingBufPtr, flatbufferSize));
+        if (_isCustomSigned) {
+            auto beginingBufPtr = _flatBuffersBuilder.GetBufferPointer();
+            signature = _customSigningCallback(ByteArrayView(beginingBufPtr, flatbufferSize));
         } else if (isSigned) {
         }
 
@@ -173,26 +173,26 @@ public:
         messagePrefix.writeToPreallocatedBuffer(serializedMessage);
         const std::size_t flatbuffersOffset = MessagePrefix::SIZE;
         const std::size_t signatureOffset = flatbuffersOffset + flatbufferSize;
-        std::memcpy(serializedMessage.data() + flatbuffersOffset, flatBuffersBuilder.GetBufferPointer(), flatbufferSize);
+        std::memcpy(serializedMessage.data() + flatbuffersOffset, _flatBuffersBuilder.GetBufferPointer(), flatbufferSize);
         std::memcpy(serializedMessage.data() + signatureOffset, signature.data(), signature.size());
         return serializedMessage;
     }
 
     using CustomSigningCallback = std::function<ByteVector(const ByteArrayView&)>;
-    CustomSigningCallback customSigningCallback;
-    bool isCustomSigned = false;
+    CustomSigningCallback _customSigningCallback;
+    bool _isCustomSigned = false;
 
 private:
-    flatbuffers::FlatBufferBuilder flatBuffersBuilder;
-    flatbuffers::Offset<flatbuffers::String> sender;
-    flatbuffers::Offset<flatbuffers::String> recipient;
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<Header>>> headers;
-    ByteArrayView body;
-    std::shared_ptr<const Certificate> signingCertificate;
-    std::shared_ptr<const PrivateKey> signingKey;
-    std::shared_ptr<const Certificate> encryptionCertificate;
-    std::int64_t ttlMs = 0;
-    bool ttlAbsolute = true;
-    bool isCompressed = false;
+    flatbuffers::FlatBufferBuilder _flatBuffersBuilder;
+    flatbuffers::Offset<flatbuffers::String> _sender;
+    flatbuffers::Offset<flatbuffers::String> _recipient;
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<Header>>> _headers;
+    ByteArrayView _body;
+    std::shared_ptr<const Certificate> _signingCertificate;
+    std::shared_ptr<const PrivateKey> _signingKey;
+    std::shared_ptr<const Certificate> _encryptionCertificate;
+    std::int64_t _ttlMs = 0;
+    bool _ttlAbsolute = true;
+    bool _isCompressed = false;
 };
 } // namespace smrf
