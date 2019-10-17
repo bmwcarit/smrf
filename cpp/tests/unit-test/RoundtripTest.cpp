@@ -39,44 +39,44 @@ class RoundtripTest : public ::testing::Test
 public:
     RoundtripTest()
     {
-        customSignature = {'T',
-                           'h',
-                           'i',
-                           's',
-                           ' ',
-                           'i',
-                           's',
-                           ' ',
-                           'a',
-                           ' ',
-                           't',
-                           'e',
-                           's',
-                           't',
-                           ' ',
-                           's',
-                           'i',
-                           'g',
-                           'n',
-                           'a',
-                           't',
-                           'u',
-                           'r',
-                           'e',
-                           '!'};
+        _customSignature = {'T',
+                            'h',
+                            'i',
+                            's',
+                            ' ',
+                            'i',
+                            's',
+                            ' ',
+                            'a',
+                            ' ',
+                            't',
+                            'e',
+                            's',
+                            't',
+                            ' ',
+                            's',
+                            'i',
+                            'g',
+                            'n',
+                            'a',
+                            't',
+                            'u',
+                            'r',
+                            'e',
+                            '!'};
     }
 
 protected:
     void checkCustomSignature(const smrf::MessageDeserializer& deserializer)
     {
         ByteArrayView signature = deserializer.getSignature();
-        ASSERT_EQ(customSignature.size(), signature.size());
+        ASSERT_EQ(_customSignature.size(), signature.size());
 
-        for (std::size_t i = 0; i < customSignature.size(); ++i) {
-            EXPECT_EQ(customSignature[i], *(signature.data() + i));
+        for (std::size_t i = 0; i < _customSignature.size(); ++i) {
+            EXPECT_EQ(_customSignature[i], *(signature.data() + i));
         }
     }
-    ByteVector customSignature;
+    ByteVector _customSignature;
 };
 
 TEST_F(RoundtripTest, notCompressedNotSignedNotEncryptedNotCustomSigned)
@@ -119,7 +119,7 @@ TEST_F(RoundtripTest, notCompressedNotEncryptedCustomSigned)
     RoundtripMessage message(isCompressed);
     MessageSerializer serializer;
     message.init(serializer);
-    auto signingCallback = [this](const ByteArrayView&) { return customSignature; };
+    auto signingCallback = [this](const ByteArrayView&) { return _customSignature; };
     serializer.setCustomSigningCallback(signingCallback);
 
     const ByteVector& serializedMessage = serializer.serialize();
@@ -139,7 +139,7 @@ TEST_F(RoundtripTest, compressedNotEncryptedCustomSigned)
     RoundtripMessage message(isCompressed);
     MessageSerializer serializer;
     message.init(serializer);
-    auto signingCallback = [this](const ByteArrayView&) { return customSignature; };
+    auto signingCallback = [this](const ByteArrayView&) { return _customSignature; };
     serializer.setCustomSigningCallback(signingCallback);
 
     const ByteVector& serializedMessage = serializer.serialize();
