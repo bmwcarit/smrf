@@ -16,7 +16,7 @@ under the License.
 
 This project has the following dependencies:
 
-└─ smrf (0.3.3) ── Apache License 2.0 (http://www.apache.org/licenses/LICENSE-2.0, http://www.opensource.org/licenses/Apache-2.0) ── package.json
+└─ smrf (0.3.4) ── Apache License 2.0 (http://www.apache.org/licenses/LICENSE-2.0, http://www.opensource.org/licenses/Apache-2.0) ── package.json
    └─ flatbuffers (1.10.0) ── Apache License 2.0 ── node_modules/flatbuffers/package.json
 
 
