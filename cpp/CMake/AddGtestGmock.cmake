@@ -22,9 +22,16 @@ else (USE_PLATFORM_GTEST_GMOCK)
         DOWNLOAD_DIR "googletest-repo"
         TIMEOUT 10
         GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG aa148eb2b7f70ede0eb10de34b6254826bfb34f4
+        GIT_TAG release-1.10.0
         CONFIGURE_COMMAND "" # Disable configuring
         BUILD_COMMAND "" # Disable building
+        # Patch commands below are specific for release-1.10.0 to fix
+        # compiler warnings wrt. switch statements not covering all values.
+        PATCH_COMMAND
+            COMMAND "sed" "-i" "1 i #pragma GCC diagnostic ignored \"-Wswitch-enum\"" "googletest/src/gtest.cc"
+            COMMAND "sed" "-i" "2 i #pragma GCC diagnostic ignored \"-Wsign-conversion\"" "googletest/src/gtest.cc"
+            COMMAND "sed" "-i" "1 i #pragma GCC diagnostic ignored \"-Wsign-conversion\"" "googlemock/include/gmock/gmock-more-actions.h"
+            COMMAND "sed" "-i" "1 i #pragma GCC diagnostic ignored \"-Wswitch-enum\"" "googlemock/src/gmock-spec-builders.cc"
         INSTALL_COMMAND "" # Disable install step
     )
 
@@ -55,7 +62,7 @@ else (USE_PLATFORM_GTEST_GMOCK)
     set(googletest_source_dir ${source_dir})
     message(STATUS "variable googletest_source_dir=${googletest_source_dir}")
     set(GTEST_INCLUDE_DIRS ${googletest_source_dir}/include)
-    set(GTEST_LIBRARIES ${googletest_binary_dir}/libgtest.a)
+    set(GTEST_LIBRARIES ${googletest_binary_dir}/lib/libgtest.a)
 
     ### Add google mock ###########################################################
 
@@ -82,7 +89,7 @@ else (USE_PLATFORM_GTEST_GMOCK)
     set(googlemock_source_dir ${source_dir})
     message(STATUS "variable googlemock_source_dir=${googlemock_source_dir}")
     set(GMOCK_INCLUDE_DIRS ${googlemock_source_dir}/include)
-    set(GMOCK_LIBRARIES ${googlemock_binary_dir}/libgmock.a)
+    set(GMOCK_LIBRARIES ${googlemock_binary_dir}/lib/libgmock.a)
 endif(USE_PLATFORM_GTEST_GMOCK)
 
 function(AddTest TARGET)
