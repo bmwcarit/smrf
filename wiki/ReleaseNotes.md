@@ -1,3 +1,6 @@
+# SMRF 0.3.4
+* [C++] Add compiler flags for C++, upgrade gtest and gmock to release-1.10.0 and supress warnings
+
 # SMRF 0.3.3
 * [JS] Reverted smrf-native changes incompatible with older joynr versions
 
